@@ -20,7 +20,7 @@ Doodle Dive is the reverse narrative.  In Doodle Dive, the Doodle character will
   * The player will have **one life**. 
   * The game will be plays a scene and a view of that scene.  There will be a score counter that will increase consistently the further the Doodle falls.  There will be three buttons at the top of screen that will be "start" "pause" and "quit". Since there is only one life, there is no need to display the lives.  When the Doodle dies, there will be a pop-up screen to show what the score is.  At this point, the user will have the opportunity to enter their name if they have a new high score. 
 
-[Imgur](http://i.imgur.com/HZg6Mkr.jpg "Doodle Fall")
+![Imgur](http://i.imgur.com/HZg6Mkr.jpg "Doodle Fall")
 
 ```
 # Header 1
