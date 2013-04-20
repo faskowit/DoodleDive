@@ -4,7 +4,7 @@ My game is inspired by the game Doodle Jump by made by Lima Sky.  Doodle jump is
 
 Doodle Dive is the reverse narrative.  In Doodle Dive, the Doodle character will be falling!  The Doodle character will fall through the sky.  There will be platorms to bounce of and monsters to avoid!  
 
-![alt text] (http://a1540.phobos.apple.com/us/r1000/113/Purple/v4/c8/1f/d4/c81fd471-854c-a16b-21d0-d7b005f6c0fd/mzl.yqqavvom.320x480-75.jpg "Doodle Jump by Lima Sky")
+![alt text] (http://a221.phobos.apple.com/us/r1000/061/Purple2/v4/cc/af/a0/ccafa0fb-d14e-38db-cab4-4ed254f8a0eb/mzl.mdotkunf.320x480-75.jpg "Doodle Jump by Lima Sky")
 
 # Implementation
 ## Things In the Game 
