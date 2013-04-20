@@ -4,6 +4,8 @@ My game is inspired by the game Doodle Jump by made by Lima Sky.  Doodle jump is
 
 Doodle Dive is the reverse narrative.  In Doodle Dive, the Doodle character will be falling!  The Doodle character will fall through the sky.  There will be platorms to bounce of and monsters to avoid!  
 
+! [Doodle Jump] (http://a1540.phobos.apple.com/us/r1000/113/Purple/v4/c8/1f/d4/c81fd471-854c-a16b-21d0-d7b005f6c0fd/mzl.yqqavvom.320x480-75.jpg "Doodle Jump by Lima Sky")
+
 # Implementation
 ## Things In the Game 
   1. Platforms: Platforms to bounce off up will consistently be moving upwards to make it appear as if the Doodle character is falling.  These platforms will be safe to land on and stationary.  Depending on what I decide, either my character will stop on said platform or my character will automatically bounce up from the platform (similar to the doodle jump game). These will probably be blue.  
@@ -15,7 +17,7 @@ Doodle Dive is the reverse narrative.  In Doodle Dive, the Doodle character will
   * The fall will be controlled by mouse clicks.  When you click and hold down the mouse the Doodle will fall in that direction.  The Doodle will pick up speed toward the click location as long as the click is held down.  The momentum of this fall will continue after the click and will eventually decay.  This will create a sort of "floaty" fall that will make it fun to control.
   * The socre will be judged by how far you can descend before you die from either damage or a monster.  So each level will have a set score that you can get if you reach the bottom.  But there is an opportunity to get even more points if you get bounus points as you fall through the Air Rings. 
   * The player will have one life. 
-
+  * The game will be plays a scene and a view of that scene.  There will be a score counter that will increase consistently the further the Doodle falls.  There will be three buttons at the top of screen that will be "start" "pause" and "quit". Since there is only one life, there is no need to display the lives.  When the Doodle dies, there will be a pop-up screen to show what the score is.  At this point, the user will have the opportunity to enter their name if they have a new high score. 
 
 
 ----
