@@ -1,6 +1,6 @@
 #include "doodledivewindow.h"
 
-
+/** This constuctor will be the window that houses the gameplay and buttons */
 DoodleDiveWindow::DoodleDiveWindow() {
 	
 	setWindowTitle("Doodle Dive!"); 
@@ -20,6 +20,7 @@ DoodleDiveWindow::DoodleDiveWindow() {
 	quit_ = new QPushButton("QUIT"); 
 	
 	//connect functions here
+	connect(quit_, SIGNAL(clicked()), qApp, SLOT(quit()));
 	
 	/** Code to implement to show scores */
 	
@@ -39,7 +40,7 @@ DoodleDiveWindow::DoodleDiveWindow() {
 	levelLCD->setSegmentStyle(QLCDNumber::Outline);
 	healthLCD->setSegmentStyle(QLCDNumber::Outline);
 	
-	socreLCD->display(socre_); 
+	socreLCD->display(score_); 
 	levelLCD->display(level_); 
 	healthLCD->display(health_); 
 	
@@ -66,6 +67,44 @@ DoodleDiveWindow::DoodleDiveWindow() {
 	/** Set layout of DoodleDiveWindow (widget) */
 	
 	setLayout(horzLayout); 
-	
-
 }
+
+DoodleDiveWindow::~DoodleDiveWindow() {
+
+	std::cout << "DoodleDiveWinow destructor called" << std::endl; 
+}
+
+/** Getters and Setters BELOW */ 
+
+int DoodleDiveWindow::get_health() {
+
+	return health_;
+}
+ 
+void DoodleDiveWindow::set_health(int health) {
+
+	health_ = health; 
+}
+
+int DoodleDiveWindow::get_level() {
+
+	return level_;
+}
+
+void DoodleDiveWindow::set_level(int level) {
+
+	level_ = level; 
+}
+
+double DoodleDiveWindow::get_score() {
+
+	return score_; 
+}
+
+void DoodleDiveWindow::set_score(double score) {
+
+	score_ = score; 
+} 
+				
+		
+
