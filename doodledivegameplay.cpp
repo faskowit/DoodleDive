@@ -1,17 +1,22 @@
 #include "doodledivegameplay.h"
+#include "doodledivewindow.h"
 
 DoodleDiveGameplay::DoodleDiveGameplay(QWidget* parentWindow) : 
-	QFrame(0) {
-
-	parentWindow->set_health(100); 
-	parentWindow->set_level(1); 
-	parentWindow->set_score(0); 
+	QFrame(parentWindow) {
 	
-	setFoucsPolicy(Qt::StrongFocus); 
+	parent_ = parentWindow; 
+
+	static_cast<DoodleDiveWindow*>(parentWindow)->set_health(100); 
+	static_cast<DoodleDiveWindow*>(parentWindow)->set_level(1); 
+	static_cast<DoodleDiveWindow*>(parentWindow)->set_score(0); 
+	
+	setFocusPolicy(Qt::StrongFocus); 
 
 } 
 
-DoodleDiveGamePlay::~DoodleDiveGameplay() {
+DoodleDiveGameplay::~DoodleDiveGameplay() {
+
+	//delete stuff 
 
 }
 

@@ -1,5 +1,6 @@
 #include <QApplication> 
 #include <QObject>
+#include "doodledivewindow.h"
 
 int main(int argc, char* argv[]) {
 
