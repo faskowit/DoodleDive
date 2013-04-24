@@ -1,21 +1,29 @@
 #ifndef DOODLE_DUDE_H
 #define DOODLE_DUDE_H
 
+#include <iostream>
 #include <QRect>
+#include <QPainter>
 
 class DoodleDude : public QRect 
 {
 	public:
-		DoodleDude(); 
-		floatRight(); 
-		floatLeft(); 
+		DoodleDude();
+		void dummy(int bleh = 0);  
+		void floatRight(int); 
+		void floatLeft(int); 
+		void moveRight(); 
+		void moveLeft(); 
+		bool hasVelocity(); 
+		void move_without_click();  
+
+		//get_Image(); 
 
 	private:
-		QImage image;
-		int rightMomentum; 
-		int leftMomentum; 
-		//int upMomentum; 
-		bool inContact; 
+		QImage image_;
+		int rightVelocity_; 
+		int leftVelocity_;  
+		bool inContact_; 
 
 };
 

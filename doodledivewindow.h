@@ -16,6 +16,8 @@
 * implement game play within the gameplay_ object within the window
 */
 
+class DoodleDiveGameplay;
+
 class DoodleDiveWindow : public QWidget  { 
 		Q_OBJECT
 	
