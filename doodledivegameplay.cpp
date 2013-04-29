@@ -50,14 +50,17 @@ void DoodleDiveGameplay::game_over() {
 
 void DoodleDiveGameplay::start_DoodleDive() {
 	
-	pressStart_ = true; 
-
-	int gameSpeed = 30; 
-
-	time_ = startTimer(gameSpeed);  //start time at gameSpeed
+	if (pressStart_ == false) {
 	
-	populate_frame();
+		pressStart_ = true; 
 
+		int gameSpeed = 30; 
+
+		time_ = startTimer(gameSpeed);  //start time at gameSpeed
+	
+		populate_frame();
+	}
+	
 }
 
 void DoodleDiveGameplay::populate_frame() {
@@ -83,12 +86,13 @@ void DoodleDiveGameplay::timerEvent(QTimerEvent* e) {
 	
 	collisionCheck();
 	
+	parent_->update_display();
+	
 	if (!moveStop_) {
 
 	move_everything_up(); 
 	heightCounter++; 
-	populate_frame(); 
-	//move_others(); 
+	populate_frame();  
 	
 	}
 
@@ -101,6 +105,7 @@ void DoodleDiveGameplay::timerEvent(QTimerEvent* e) {
 void DoodleDiveGameplay::collisionCheck() {
 
 	bool healthChange = false; 
+	bool monsterHit = false; 
 
 	moveStop_ = false; 
 	QRect* theDudePtr = static_cast<QRect*>(theDude_); 
@@ -124,6 +129,31 @@ void DoodleDiveGameplay::collisionCheck() {
 			moveLength_ = 1; 
 			gameOver_ = true;   
 		}
+	}
+	
+	for (unsigned int i=0; i < fireballList.size(); i++) { 
+		for (unsigned int j=0; j < monsterList.size(); j++) {
+			if (static_cast<QRect*>(monsterList[j])->intersects
+				(*(static_cast<QRect*>(fireballList[i])))) {
+				
+				delete monsterList[j]; 
+				monsterList.erase(monsterList.begin() + j);
+				delete fireballList[i]; 
+				fireballList.erase(fireballList.begin() + i);
+				monsterHit = true; 
+			}
+		}
+	}
+	
+	if (monsterHit) {
+	
+	int temphealth = parent_->get_health(); 
+	temphealth += 20;
+	parent_->set_health(temphealth);
+	int tempscore = parent_->get_score(); 
+	tempscore += 150; 
+	parent_->set_score(tempscore);
+	
 	}
 	
 	if (healthChange) {
@@ -152,6 +182,9 @@ void DoodleDiveGameplay::paintEvent(QPaintEvent* e) {
 		}
 		for (unsigned int i = 0; i < monsterList.size(); i++) {
 			painter.drawRect(*monsterList[i]);
+		}
+		for (unsigned int i = 0; i < fireballList.size(); i++) {
+			painter.drawRect(*fireballList[i]);
 		}
 	}
 		
@@ -211,7 +244,10 @@ void DoodleDiveGameplay::move_others() {
 		badPlatformList[i]->move_horizontal();
 		
 	for (unsigned int i=0; i < monsterList.size(); i++)
-			monsterList[i]->move_up(moveLength_ + 2);
+		monsterList[i]->move_up(moveLength_ + 2);
+			
+	for (unsigned int i=0; i < fireballList.size(); i++)
+		fireballList[i]->fired_shot(); 
 	
 }
 
@@ -227,13 +263,31 @@ void DoodleDiveGameplay::move_everything_up() {
 			
 		for (unsigned int i=0; i < badPlatformList.size(); i++) {
 			badPlatformList[i]->move_up(moveLength_);
-		}
-		
-		 		
+		} 		
 	}
-	
-
 }
+
+void DoodleDiveGameplay::keyPressEvent(QKeyEvent* e) {
+
+	if (e->key() == Qt::Key_Space) { 
+		if (fireballList.size() < 1)
+			fireballList.push_back(new Fireball(theDude_)); 
+		else {
+			delete fireballList[0]; 
+			fireballList.erase(fireballList.begin()); 
+			fireballList.push_back(new Fireball(theDude_));	
+		}
+	}
+		
+}
+
+
+
+
+
+
+
+
 
 
 

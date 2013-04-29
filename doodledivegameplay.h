@@ -1,6 +1,7 @@
 #ifndef DOODLE_DIVE_GAMEPLAY_H
 #define DOODLE_DIVE_GAMEPLAY_H
 
+#include <QRect>
 #include <iostream>
 #include <QObject> 
 #include <QPainter>
@@ -15,6 +16,7 @@
 #include "platform.h"
 #include "badplatform.h"
 #include "monster.h"
+#include "fireball.h"
 
 using namespace std; 
 
@@ -32,6 +34,7 @@ class DoodleDiveGameplay : public QFrame
 		void timerEvent(QTimerEvent*); 
 		void paintEvent(QPaintEvent*);
 		void mousePressEvent(QMouseEvent *);
+		void keyPressEvent(QKeyEvent *); 
 	private: 
 		DoodleDiveWindow* parent_; 
 		DoodleDude* theDude_; 
@@ -44,6 +47,7 @@ class DoodleDiveGameplay : public QFrame
 		vector<Platform*> platformList; 
 		vector<BadPlatform*> badPlatformList; 
 		vector<Monster*> monsterList; 
+		vector<Fireball*> fireballList; 
 		
 		bool moveStop_; 
 		int moveLength_; 
