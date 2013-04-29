@@ -14,9 +14,9 @@ void DoodleDude::floatRight () {
 
 	int rightPoint = ((left())); 
 
-	dummy(left()); 
+	//dummy(left()); 
 
-	dummy(rightPoint);
+	//dummy(rightPoint);
 	
 	if ((rightPoint + 65)  < 400)
 		this->moveTo((rightPoint + 4), top());	

@@ -12,8 +12,8 @@ DoodleDiveGameplay::DoodleDiveGameplay(QWidget* parentWindow) :
 	QFrame(parentWindow) {
 	
 	parent_ = static_cast<DoodleDiveWindow*>(parentWindow); 
-
-	parent_->set_health(100); 
+	
+	parent_->set_health(500); 
 	parent_->set_level(1); 
 	parent_->set_score(0); 
 	
@@ -22,10 +22,13 @@ DoodleDiveGameplay::DoodleDiveGameplay(QWidget* parentWindow) :
 	pressStart_ = false; 
 	
 	theDude_ = new DoodleDude(); 
-	
+	 
 	heightCounter = 0;
 	moveStop_ = false; 
 	moveLength_ = 1; 
+	
+	
+	gameOver_ = false; 
 
 } 
 
@@ -39,11 +42,9 @@ void DoodleDiveGameplay::game_over() {
 
 	moveStop_ = true; 
 	
-	QPainter painter(this); 
+	killTimer(time_); 
 	
-	//QRect
 	
-	//FINISH UPPPPPPPPP
 
 }
 
@@ -53,45 +54,53 @@ void DoodleDiveGameplay::start_DoodleDive() {
 
 	int gameSpeed = 30; 
 
-	startTimer(gameSpeed);  //start time at gameSpeed
+	time_ = startTimer(gameSpeed);  //start time at gameSpeed
 	
 	populate_frame();
 
 }
 
 void DoodleDiveGameplay::populate_frame() {
+	
+	if (heightCounter % 100 == 0) {
+		monsterList.push_back(new Monster()); 
+	}
 
-	//dummy(75); 
-
-	if (heightCounter % 100 == 0) 
+	if (heightCounter % 50 == 0) 
 		platformList.push_back(new Platform(60)); 
 		
-	int badAppear = rand() % 4; 
+	int badAppear = rand() % 4;
 	
-	if (heightCounter % 100 == 1) {
+	if (heightCounter % 30 == 0) {
 		if (badAppear == 1) 
-			badPlatformList.push_back(new BadPlatform(50));
+			badPlatformList.push_back(new BadPlatform(5));
 	}
 	
 	
 }
 
 void DoodleDiveGameplay::timerEvent(QTimerEvent* e) {
-
-	//if (theDude_->hasVelocity()) 
-		//theDude_->move_without_click();  
+	
+	collisionCheck();
+	
+	if (!moveStop_) {
 
 	move_everything_up(); 
 	heightCounter++; 
 	populate_frame(); 
+	//move_others(); 
 	
-	collisionCheck();
+	}
+
+	move_others(); 
 
 	repaint(); 
 
 }
 
 void DoodleDiveGameplay::collisionCheck() {
+
+	bool healthChange = false; 
 
 	moveStop_ = false; 
 	QRect* theDudePtr = static_cast<QRect*>(theDude_); 
@@ -100,24 +109,33 @@ void DoodleDiveGameplay::collisionCheck() {
 		if (theDudePtr->intersects(*(static_cast<QRect*>(platformList[i])))) {
 			moveStop_ = true;
 			moveLength_ = 1; 
-			
-			//if(platformList[i]->top() != theDudePtr 
 		}
 	}
 	for (unsigned int i=0; i < badPlatformList.size(); i++) {
 		if (theDudePtr->intersects(*(static_cast<QRect*>(badPlatformList[i])))) {
-			moveStop_ = true; 
+			//moveStop_ = true; 
 			moveLength_ = 1; 
-			int temphealth = parent_->get_health(); 
-			temphealth -=10;
-			parent_->set_health(temphealth);
+			healthChange = true; 
+		}	
+	}
+	for (unsigned int i=0; i < monsterList.size(); i++) {
+		if (theDudePtr->intersects(*(static_cast<QRect*>(monsterList[i])))) {
+			moveStop_ = true;
+			moveLength_ = 1; 
+			gameOver_ = true;   
 		}
 	}
-		
-		
+	
+	if (healthChange) {
+	
+		int temphealth = parent_->get_health(); 
+		temphealth--;
+		parent_->set_health(temphealth);
+		parent_->update_display(); 
+	}
 		
 	if (parent_->get_health() < 1)
-		game_over(); 
+		gameOver_ = true; 
 }
 
 void DoodleDiveGameplay::paintEvent(QPaintEvent* e) {
@@ -128,8 +146,13 @@ void DoodleDiveGameplay::paintEvent(QPaintEvent* e) {
 		painter.drawRect(static_cast<QRect>(*theDude_));
 		for (unsigned int i = 0; i < platformList.size(); i++) {
 			painter.drawRect(*platformList[i]);
+		} 
+		for (unsigned int i = 0; i < badPlatformList.size(); i++) {
+			painter.drawRect(*badPlatformList[i]);
 		}
-		
+		for (unsigned int i = 0; i < monsterList.size(); i++) {
+			painter.drawRect(*monsterList[i]);
+		}
 	}
 		
 
@@ -137,13 +160,10 @@ void DoodleDiveGameplay::paintEvent(QPaintEvent* e) {
 
 void DoodleDiveGameplay::mousePressEvent(QMouseEvent *e) {
 
-	int mouseX, mouseY, distanceLeft, distanceRight; 
+	int mouseX, mouseY;
 	
 	mouseX = e->x(); 
-	mouseY = e->y(); 
-
-	//distanceLeft = (theDude_->left()) + 25 - 
-	
+	mouseY = e->y();
 	
 	if (mouseY < 100) {
 		if (mouseX < ((theDude_->x()) + 25))
@@ -171,10 +191,10 @@ void DoodleDiveGameplay::mousePressEvent(QMouseEvent *e) {
 	}
 	else {
 		if (mouseX < ((theDude_->x()) + 25))
-			for (int i=0; i < 6; i++)
+			for (int i=0; i < 7; i++)
 				theDude_->floatLeft(); 
 		else 
-			for (int i=0; i < 6; i++)
+			for (int i=0; i < 7; i++)
 				theDude_->floatRight();
 	}
 
@@ -185,8 +205,17 @@ void DoodleDiveGameplay::mousePressEvent(QMouseEvent *e) {
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 }*/ 
 
-void DoodleDiveGameplay::move_everything_up() {
+void DoodleDiveGameplay::move_others() { 
 
+	for (int i=0; i < badPlatformList.size(); i++) 
+		badPlatformList[i]->move_horizontal();
+		
+	for (unsigned int i=0; i < monsterList.size(); i++)
+			monsterList[i]->move_up(moveLength_ + 2);
+	
+}
+
+void DoodleDiveGameplay::move_everything_up() {
 
 	if (heightCounter % 20 == 0) 
 		moveLength_ = (moveLength_ + 1);
@@ -194,8 +223,15 @@ void DoodleDiveGameplay::move_everything_up() {
 	if(!moveStop_) {	
 
 		for (unsigned int i=0; i < platformList.size(); i++)
-			platformList[i]->move_up(moveLength_); 
+			platformList[i]->move_up(moveLength_);
+			
+		for (unsigned int i=0; i < badPlatformList.size(); i++) {
+			badPlatformList[i]->move_up(moveLength_);
+		}
+		
+		 		
 	}
+	
 
 }
 

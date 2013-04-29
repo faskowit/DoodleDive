@@ -2,11 +2,12 @@
 #define BADPLATFORM_H
 
 #include "platform.h"
+#include <QPoint>
 
 class BadPlatform : public Platform {
 	public:
 		BadPlatform(int length) : Platform (length) {
-		
+		 
 			moveRight_ = true; 
 		
 			int moveDir = rand() % 1; 
@@ -15,19 +16,20 @@ class BadPlatform : public Platform {
 				moveRight_ = false; 
 		
 			//static_cast<QRect*>(this)->image
-		}
+	};
+	void move_horizontal () {
+			
+			int tempwidth = width() ; 
+			
+			tempwidth++; 
+		
+			if (moveRight_) {
+				this->setWidth(tempwidth); 
+			}	
+	};
 	private:
 		bool moveRight_; 
-		void move_horizontal () {
 		
-			int leftPos = left(); 
-		
-			if (moveRight_)
-				moveTo(leftPos + 52, top()); 	
-			else
-				moveTo(leftPos - 2, top());
-		
-		};
 
 
 

@@ -31,12 +31,17 @@ class DoodleDiveWindow : public QWidget  {
 		double get_score(); 
 		void set_score(double); 
 		DoodleDiveGameplay* get_gameplay(); 
+		void update_display(); 
 	private: 
 		DoodleDiveGameplay* gameplay_; 
 		
 		QPushButton* start_; 
 		QPushButton* pause_; 
 		QPushButton* quit_; 
+		
+		QLCDNumber* scoreLCD_;
+		QLCDNumber* levelLCD_; 
+		QLCDNumber* healthLCD_;
 		 
 		int health_; 
 		int level_; 

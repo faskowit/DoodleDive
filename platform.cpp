@@ -25,6 +25,8 @@ Platform::Platform(int length, int height) : QRect()  {
 	this->setRect(this->xPos_, 600, length, height); 
 	
 	this->contact_ = false; 
+	
+	std::cout << "@#@##@@" ; 
 
 }
 

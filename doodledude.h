@@ -11,14 +11,9 @@ class DoodleDude : public QRect
 		DoodleDude();
 		void dummy(int bleh = 0);  
 		void floatRight(); 
-		void floatLeft(); 
-		//void moveRight(); 
-		//void moveLeft(); 
-		//bool hasVelocity(); 
+		void floatLeft();  
 		void move_without_click(); 
 		
-		  
-
 		//get_Image(); 
 
 	private:

@@ -3,10 +3,12 @@
 /** This constuctor will be the window that houses the gameplay and buttons */
 DoodleDiveWindow::DoodleDiveWindow() {
 	
+	//std::cout << "BLLLLOOOP"<< std::endl; 
+	
 	setWindowTitle("Doodle Dive!"); 
 	
 	QVBoxLayout* vertLayout = new QVBoxLayout;
-	QHBoxLayout* horzLayout = new QHBoxLayout;   
+	QHBoxLayout* horzLayout = new QHBoxLayout;  
 	
 	/**Horizontal elements: gameplay and vertical elements */
 	
@@ -26,6 +28,7 @@ DoodleDiveWindow::DoodleDiveWindow() {
 	
 	/** Code to implement to show scores */
 	
+	
 	QLabel* scoreLabel = new QLabel("SCORE"); 
 	QLabel* levelLabel = new QLabel("LEVEL"); 
 	QLabel* healthLabel = new QLabel("HEALTH"); 
@@ -34,17 +37,18 @@ DoodleDiveWindow::DoodleDiveWindow() {
 	levelLabel->setAlignment(Qt::AlignHCenter | Qt::AlignBottom); 
 	healthLabel->setAlignment(Qt::AlignHCenter | Qt::AlignBottom); 
 	
-	QLCDNumber* scoreLCD = new QLCDNumber (4); 
-	QLCDNumber* levelLCD = new QLCDNumber (2); 
-	QLCDNumber* healthLCD = new QLCDNumber (3); 
 	
-	scoreLCD->setSegmentStyle(QLCDNumber::Outline);
-	levelLCD->setSegmentStyle(QLCDNumber::Outline);
-	healthLCD->setSegmentStyle(QLCDNumber::Outline);
+	scoreLCD_ = new QLCDNumber (4); 
+	levelLCD_ = new QLCDNumber (2); 
+	healthLCD_ = new QLCDNumber (3); 
 	
-	scoreLCD->display(score_); 
-	levelLCD->display(level_); 
-	healthLCD->display(health_); 
+	scoreLCD_->setSegmentStyle(QLCDNumber::Outline);
+	levelLCD_->setSegmentStyle(QLCDNumber::Outline);
+	healthLCD_->setSegmentStyle(QLCDNumber::Outline);
+	
+	scoreLCD_->display(score_); 
+	levelLCD_->display(level_); 
+	healthLCD_->display(health_); 
 	
 	/** Adding buttons and scores to a vertical layout */  
 	
@@ -53,13 +57,13 @@ DoodleDiveWindow::DoodleDiveWindow() {
 	vertLayout->addWidget(quit_);
 	
 	vertLayout->addWidget(scoreLabel);
-	vertLayout->addWidget(scoreLCD); 
+	vertLayout->addWidget(scoreLCD_); 
 	
 	vertLayout->addWidget(levelLabel); 
-	vertLayout->addWidget(levelLCD); 
+	vertLayout->addWidget(levelLCD_);
 	
 	vertLayout->addWidget(healthLabel); 
-	vertLayout->addWidget(healthLCD); 
+	vertLayout->addWidget(healthLCD_); 
 	
 	/** Adding gameplay and vertLayout to horzLayout */
 	
@@ -69,6 +73,13 @@ DoodleDiveWindow::DoodleDiveWindow() {
 	/** Set layout of DoodleDiveWindow (widget) */
 	
 	setLayout(horzLayout); 
+}
+
+void DoodleDiveWindow::update_display() {
+
+	scoreLCD_->display(score_); 
+	levelLCD_->display(level_); 
+	healthLCD_->display(health_); 
 }
 
 DoodleDiveWindow::~DoodleDiveWindow() {
@@ -85,7 +96,7 @@ int DoodleDiveWindow::get_health() {
  
 void DoodleDiveWindow::set_health(int health) {
 
-	health_ = health; 
+	health_ = health;  
 }
 
 int DoodleDiveWindow::get_level() {
@@ -105,7 +116,7 @@ double DoodleDiveWindow::get_score() {
 
 void DoodleDiveWindow::set_score(double score) {
 
-	score_ = score; 
+	score_ = score;  
 } 
 				
 DoodleDiveGameplay* DoodleDiveWindow::get_gameplay() {

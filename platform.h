@@ -1,6 +1,7 @@
 #ifndef PLATFORM_H
 #define PLATFORM_H
 
+#include <iostream>
 #include <QRect>
 
 class Platform: public QRect { 

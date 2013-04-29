@@ -14,6 +14,7 @@
 #include "doodledivewindow.h"
 #include "platform.h"
 #include "badplatform.h"
+#include "monster.h"
 
 using namespace std; 
 
@@ -35,24 +36,30 @@ class DoodleDiveGameplay : public QFrame
 		DoodleDiveWindow* parent_; 
 		DoodleDude* theDude_; 
 		
+		int time_; 
+		
 		void collisionCheck();
 		void game_over(); 
 		
 		vector<Platform*> platformList; 
 		vector<BadPlatform*> badPlatformList; 
+		vector<Monster*> monsterList; 
 		
 		bool moveStop_; 
 		int moveLength_; 
 		void move_everything_up();
 		
+		void move_others(); 
+		
 		int heightCounter;
 		void populate_frame();  
 		
-		bool pressStart_; 
+		bool pressStart_;
+		bool gameOver_;  
 	
 	public slots:
 		void start_DoodleDive(); 
-	
+		
 	
 };
 
