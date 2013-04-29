@@ -10,62 +10,102 @@ DoodleDude::DoodleDude() : QRect() {
 
 }
 
-void DoodleDude::floatRight(int toTheRight) {
-	
-	rightVelocity_ +=  5; //(toTheRight - (x() + 25)) * 0.2;   
+void DoodleDude::floatRight () {
 
-	if (rightVelocity_ > 0) 
-		moveRight(); 
-	else 
-		rightVelocity_ = 0;
+	int rightPoint = ((left())); 
+
+	dummy(left()); 
+
+	dummy(rightPoint);
 	
+	if ((rightPoint + 65)  < 400)
+		this->moveTo((rightPoint + 4), top());	
+
 }
 
-void DoodleDude::floatLeft(int toTheLeft) {
+void DoodleDude::floatLeft () {
 
-	leftVelocity_ += ((x() + 25) - toTheLeft) * 0.2;  
-
-	if (leftVelocity_ > 0) 
-		moveLeft(); 
-	else 
-		leftVelocity_ = 0;
+	int leftPoint = left(); 
 	
+	if (leftPoint - 15 > 0)
+		this->moveTo((leftPoint - 4), top()); 
+		
 }
- 
-void DoodleDude::moveRight() {
 
-	int newPos;
+/*void DoodleDude::floatRight(int toTheRight) {
 
-	if (rightVelocity_ < 50)
-		newPos = (right()-25) + rightVelocity_;
-	else 
-		newPos = (right()-25) + 50;
+	rightVelocity_ += rightVelocity_ + 5; 
 	
-	if (leftVelocity_)
-		newPos = newPos - (leftVelocity_ * 0.9); 
+	moveRight(); 
+} */
+
+/*void DoodleDude::moveRight() {
+
+	int newPos, center;
+	
+	center = (left()) + 25;  
+	
+	newPos = (center + 3);
 	
 	if (newPos < 400) 
 		moveTo(newPos, top());
 	else 
 		moveTo((newPos - 400), top());
 		
-	rightVelocity_ -= (rightVelocity_ * 0.11); 
+	rightVelocity_ -= 1;
+	
+} */
+
+/*void DoodleDude::floatRight(int toTheRight) {
+
+	int leftPoint = left(); 
+
+	rightVelocity_ += ((toTheRight - (leftPoint)) + 25) * 0.1 ;    
+
+	if (rightVelocity_ > 0) 
+		moveRight(); 
+	else 
+		rightVelocity_ = 0;  
+	
+}*/
+
+/*void DoodleDude::floatLeft(int toTheLeft) {
+
+	leftVelocity_ += (((left()) - toTheLeft) + 25) * 0.1 ; 
+
+	
+	
+} */
+ 
+/*void DoodleDude::moveRight() {
+
+	int newPos; 
+	
+	if (rightVelocity_ < 50)
+		newPos = ((left()) + rightVelocity_);
+	else 
+		newPos = (left()) + 50;
+	
+	if (newPos < 400) 
+		moveTo(newPos, top());
+	else 
+		moveTo((newPos - 400), top());
+		
+	rightVelocity_ -= (rightVelocity_ * 0.3); 
 	
 	if (rightVelocity_ < 2)
-		rightVelocity_ = 0;
-}
+		rightVelocity_ = 0;  
+	
+} */
 
-void DoodleDude::moveLeft() {
+/*void DoodleDude::moveLeft() {
 
 	int newPos;
 
 	if (leftVelocity_ < 50)
-		newPos = (left()+25) - leftVelocity_;
+		newPos = ((left()) - leftVelocity_);
 	else 
-		newPos = (left()+25) - 50;
-	
-	if (rightVelocity_)
-		newPos = newPos - (rightVelocity_ * 0.9); 
+		newPos = (left()) - 50;
 	
 	if (newPos > 0) 
 		moveTo(newPos, top());
@@ -76,27 +116,21 @@ void DoodleDude::moveLeft() {
 	
 	if (leftVelocity_ < 2)
 		leftVelocity_ = 0;
+	
 
+} */
 
-}
+/*bool DoodleDude::hasVelocity() {
 
-bool DoodleDude::hasVelocity() {
-
-	if (rightVelocity_ || leftVelocity_)
+	if (leftVelocity_)
 		return true; 
 	else 
 		return false; 
 		
-} 
+} */
 
 void DoodleDude::move_without_click() {
 
-	//dummy(10);
-
-	if (rightVelocity_ > leftVelocity_)
-		moveRight(); 
-	else
-		moveLeft(); 
 }
 
 void DoodleDude::dummy(int bleh) {

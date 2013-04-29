@@ -6,14 +6,20 @@
 #include <QPainter>
 #include <QFrame> 
 #include <QEvent>  
-#include <vector>
+#include <queue>
+#include <list>
 #include <QApplication>
 #include <QWidget>  
 #include <QMouseEvent> 
 #include "doodledivewindow.h"
+#include "platform.h"
+#include "badplatform.h"
+
+using namespace std; 
 
 class DoodleDiveWindow;
 class DoodleDude;
+class Platform; 
 
 class DoodleDiveGameplay : public QFrame 
 {
@@ -28,6 +34,19 @@ class DoodleDiveGameplay : public QFrame
 	private: 
 		DoodleDiveWindow* parent_; 
 		DoodleDude* theDude_; 
+		
+		void collisionCheck();
+		void game_over(); 
+		
+		vector<Platform*> platformList; 
+		vector<BadPlatform*> badPlatformList; 
+		
+		bool moveStop_; 
+		int moveLength_; 
+		void move_everything_up();
+		
+		int heightCounter;
+		void populate_frame();  
 		
 		bool pressStart_; 
 	
