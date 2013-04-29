@@ -14,7 +14,7 @@ class Fireball : public QRect {
 			dudeX = (tempDude->x()) + 15; 
 			dudeY = tempDude->y(); 
 		
-			this->setRect(dudeX, dudeY, 15, 15);
+			this->setRect(dudeX, (dudeY + 35), 15, 15);
 			
 			this->health_ = 3; 
 		}; 

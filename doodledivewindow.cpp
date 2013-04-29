@@ -25,6 +25,8 @@ DoodleDiveWindow::DoodleDiveWindow() {
 	connect(quit_, SIGNAL(clicked()), qApp, SLOT(quit()));
 	connect(start_, SIGNAL(clicked()), gameplay_, 
 		SLOT(start_DoodleDive())); 
+	connect(pause_, SIGNAL(clicked()), gameplay_, 
+		SLOT(pause_DoodleDive()));
 	
 	/** Code to implement to show scores */
 	

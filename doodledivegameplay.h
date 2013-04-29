@@ -39,7 +39,8 @@ class DoodleDiveGameplay : public QFrame
 		DoodleDiveWindow* parent_; 
 		DoodleDude* theDude_; 
 		
-		int time_; 
+		int time_;
+		int gameSpeed_;  
 		
 		void collisionCheck();
 		void game_over(); 
@@ -59,10 +60,12 @@ class DoodleDiveGameplay : public QFrame
 		void populate_frame();  
 		
 		bool pressStart_;
+		bool pressPause_; 
 		bool gameOver_;  
 	
 	public slots:
 		void start_DoodleDive(); 
+		void pause_DoodleDive(); 
 		
 	
 };

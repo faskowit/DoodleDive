@@ -19,7 +19,8 @@ DoodleDiveGameplay::DoodleDiveGameplay(QWidget* parentWindow) :
 	
 	setFocusPolicy(Qt::StrongFocus); 
 	
-	pressStart_ = false; 
+	pressStart_ = false;
+	pressPause_ = false;  
 	
 	theDude_ = new DoodleDude(); 
 	 
@@ -54,16 +55,35 @@ void DoodleDiveGameplay::start_DoodleDive() {
 	
 		pressStart_ = true; 
 
-		int gameSpeed = 30; 
+		gameSpeed_ = 35; 
 
-		time_ = startTimer(gameSpeed);  //start time at gameSpeed
+		time_ = startTimer(gameSpeed_);  //start time at gameSpeed
 	
 		populate_frame();
 	}
 	
 }
 
+void DoodleDiveGameplay::pause_DoodleDive() {
+
+	if (pressStart_ == true) {
+	
+		if (!pressPause_) {
+			pressPause_ = true; 
+			killTimer(time_); 
+		}
+		else {
+			pressPause_ = false; 
+			time_ = startTimer(gameSpeed_); 
+		}
+	}	
+}
+
 void DoodleDiveGameplay::populate_frame() {
+	
+	if(moveLength_ > 10) 
+		if (heightCounter % 24 == 0)
+			monsterList.push_back(new Monster()); 
 	
 	if (heightCounter % 100 == 0) {
 		monsterList.push_back(new Monster()); 
@@ -82,6 +102,13 @@ void DoodleDiveGameplay::populate_frame() {
 	
 }
 
+/*void DoodleDiveGameplay::depopulate_lists() {
+
+	for (int i=0; i < platformList.size(); i++); 
+	vector<BadPlatform*> badPlatformList; 
+	vector<Monster*> monsterList; 
+	vector<Fireball*> fireballList; 
+*/
 void DoodleDiveGameplay::timerEvent(QTimerEvent* e) {
 	
 	collisionCheck();
@@ -111,9 +138,15 @@ void DoodleDiveGameplay::collisionCheck() {
 	QRect* theDudePtr = static_cast<QRect*>(theDude_); 
 	
 	for (unsigned int i=0; i < platformList.size(); i++) {
-		if (theDudePtr->intersects(*(static_cast<QRect*>(platformList[i])))) {
-			moveStop_ = true;
-			moveLength_ = 1; 
+		if (platformList[i]->y() > 0) {
+			if (theDudePtr->intersects(*(static_cast<QRect*>(platformList[i])))) {
+				moveStop_ = true;
+				moveLength_ = 1; 
+			}
+		}
+		else {
+			delete platformList[i]; 
+			platformList.erase(platformList.begin() + i);
 		}
 	}
 	for (unsigned int i=0; i < badPlatformList.size(); i++) {
@@ -255,6 +288,13 @@ void DoodleDiveGameplay::move_everything_up() {
 
 	if (heightCounter % 20 == 0) 
 		moveLength_ = (moveLength_ + 1);
+		
+	if (moveLength_ > 10) {
+	
+		int tempscore = parent_->get_score(); 
+		tempscore += 5;
+		parent_->set_score(tempscore); 
+	}
 
 	if(!moveStop_) {	
 
