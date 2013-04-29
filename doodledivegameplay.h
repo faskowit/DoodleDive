@@ -62,6 +62,8 @@ class DoodleDiveGameplay : public QFrame
 		bool pressStart_;
 		bool pressPause_; 
 		bool gameOver_;  
+		
+		void update_timer(); 
 	
 	public slots:
 		void start_DoodleDive(); 
