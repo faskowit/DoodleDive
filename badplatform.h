@@ -2,13 +2,11 @@
 #define BADPLATFORM_H
 
 #include "platform.h"
-#include <QPoint>
-
-class DoodleDiveWindow; 
+#include <QPoint> 
 
 class BadPlatform : public Platform {
 	public:
-		BadPlatform(int length, DoodleDiveWindow* parent) : Platform (length, parent) {
+		BadPlatform(int length) : Platform (length) {
 		 
 			moveRight_ = true; 
 		

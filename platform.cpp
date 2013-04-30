@@ -1,6 +1,6 @@
 #include "platform.h"
 
-Platform::Platform(int length, DoodleDiveWindow* parent) : QRect()  {
+Platform::Platform(int length) : QRect()  {
 
 	this->length_ = length; 
 	
@@ -14,7 +14,7 @@ Platform::Platform(int length, DoodleDiveWindow* parent) : QRect()  {
 
 }
 
-Platform::Platform(int length, int height, DoodleDiveWindow* parent) : QRect()  {
+Platform::Platform(int length, int height) : QRect()  {
 
 	this->length_ = length; 
 	

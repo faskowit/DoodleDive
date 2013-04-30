@@ -3,14 +3,11 @@
 
 #include <iostream>
 #include <QRect>
-//#include "doodledivewindow.h"
-
-class DoodleDiveWindow; 
 
 class Platform: public QRect { 
 	public:
-		Platform(int, DoodleDiveWindow*); 
-		Platform(int, int, DoodleDiveWindow*); 
+		Platform(int); 
+		Platform(int, int); 
 		void move_up(int); 
 		int get_height() const;  
 		virtual void contact_made(); 

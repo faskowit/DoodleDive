@@ -1,14 +1,12 @@
 #ifndef HALO_H
 #define HALO_H
 
-#include "doodledivewindow.h"
-
 class DoodleDiveWindow; 
 
 class Halo : public Platform {
 
 	public:
-		Halo(DoodleDiveWindow* parent) : Platform (60,2, parent) {
+		Halo() : Platform (60,2) {
 		
 		//std::cout << "@@@";
 			//set image 

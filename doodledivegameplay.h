@@ -20,6 +20,7 @@
 #include "halo.h"
 #include <QPixmap>
 #include <QImage>
+#include <QBrush>
 
 using namespace std; 
 
@@ -72,10 +73,12 @@ class DoodleDiveGameplay : public QFrame
 		void load_images(); 
 		
 		QImage* haloImage_; 
-		//QImage badplatformImage_; 
 		QImage* platformImage_; 
 		QImage* monsterImage_; 
+		QImage* theDudeImage_;
+		QImage* fireballImage_;
 		
+		void depopulate_lists();
 	
 	public slots:
 		void start_DoodleDive(); 

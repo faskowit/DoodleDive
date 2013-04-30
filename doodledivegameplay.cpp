@@ -60,6 +60,29 @@ void DoodleDiveGameplay::start_DoodleDive() {
 		time_ = startTimer(gameSpeed_);  //start time at gameSpeed
 	
 		populate_frame();
+	} 
+	
+	else {
+	
+		depopulate_lists();
+	
+		parent_->set_health(500); 
+		parent_->set_level(0); 
+		parent_->set_score(0);	
+		
+		pressStart_ = false;
+		pressPause_ = false;
+		
+		theDude_ = new DoodleDude(); 
+	 
+		heightCounter = 0;
+		moveStop_ = false; 
+		moveLength_ = 1; 
+	
+	
+		gameOver_ = false; 
+	
+		load_images(); 
 	}
 	
 }
@@ -83,40 +106,49 @@ void DoodleDiveGameplay::populate_frame() {
 	
 	if(moveLength_ > 10) 
 		if (heightCounter % 24 == 0)
-			monsterList.push_back(new Monster(parent_));
+			monsterList.push_back(new Monster());
 			
 	if (parent_->get_level() > 4) {
 		if (heightCounter % (150-(10 * parent_->get_level())) == 0)
-			monsterList.push_back(new Monster(parent_)); 
+			monsterList.push_back(new Monster()); 
 	}
 	
 	if (heightCounter % 100 == 0) {
-		monsterList.push_back(new Monster(parent_)); 
+		monsterList.push_back(new Monster()); 
 	}
 
 	if (heightCounter % 50 == 0) 
-		platformList.push_back(new Platform(60, parent_)); 
+		platformList.push_back(new Platform(60)); 
 		
 	int badAppear = rand() % 4;
 	
 	if (heightCounter % 30 == 0) {
 		if (badAppear == 1) 
-			badPlatformList.push_back(new BadPlatform(5, parent_));
+			badPlatformList.push_back(new BadPlatform(5));
 	}
 	
 	if (heightCounter % 471 == 0)
-		haloList.push_back(new Halo(parent_));
+		haloList.push_back(new Halo());
 	
 	
 }
 
-/*void DoodleDiveGameplay::depopulate_lists() {
+void DoodleDiveGameplay::depopulate_lists() {
 
-	for (int i=0; i < platformList.size(); i++); 
-	vector<BadPlatform*> badPlatformList; 
-	vector<Monster*> monsterList; 
-	vector<Fireball*> fireballList; 
-*/
+	for (unsigned int i=0; i < platformList.size(); i++) {
+		delete platformList[i]; 
+		platformList.erase(platformList.begin() + i);
+	}
+	for (unsigned int i=0; i < badPlatformList.size(); i++) {
+		delete badPlatformList[i]; 
+		badPlatformList.erase(badPlatformList.begin() + i);
+	}
+	for (unsigned int i=0; i < haloList.size(); i++) {
+		delete haloList[i]; 
+		haloList.erase(haloList.begin() + i);
+	}	 
+
+}
 void DoodleDiveGameplay::timerEvent(QTimerEvent* e) {
 	
 	if(e) {}; 
@@ -240,34 +272,38 @@ void DoodleDiveGameplay::paintEvent(QPaintEvent* e) {
 	if(e) {};  
 
 	QPainter painter(this); 
+	if (gameOver_) {
+		game_over(); 
+		painter.drawPixmap(rect(), QPixmap("gameover.png"))	;
+	}
+	else if (pressStart_) {
+		if (heightCounter % 33 < 11) 
+			painter.drawPixmap(rect(), QPixmap("background1.png"));
+		else if (heightCounter % 33 < 22) 
+			painter.drawPixmap(rect(), QPixmap("background2.png"));
+		else 
+			painter.drawPixmap(rect(), QPixmap("background3.png"));
 	
-	if (pressStart_) {
-		painter.drawRect(static_cast<QRect>(*theDude_));
+		painter.drawImage(static_cast<QRect>(*theDude_), *theDudeImage_);
 		for (unsigned int i = 0; i < platformList.size(); i++) {
 			painter.drawImage(*platformList[i], *platformImage_);
 		} 
 		for (unsigned int i = 0; i < badPlatformList.size(); i++) {
+			painter.fillRect(*badPlatformList[i], Qt::DiagCrossPattern);
 			painter.drawRect(*badPlatformList[i]);
 		}
 		for (unsigned int i = 0; i < monsterList.size(); i++) {
 			painter.drawImage(*monsterList[i], *monsterImage_);
 		}
 		for (unsigned int i = 0; i < fireballList.size(); i++) {
-			painter.drawRect(*fireballList[i]);
+			painter.drawImage(*fireballList[i], *fireballImage_);
 		}
 		for (unsigned int i = 0; i < haloList.size(); i++) {
 			painter.drawImage(*haloList[i], *haloImage_); 
 		}
 	} 
-	else if (gameOver_) {
-	
-		game_over(); 
-		//painter
-	}
 	else {
-	
 		painter.drawPixmap(rect(), QPixmap("opening.png"));
-	
 	}
 		
 
@@ -400,6 +436,10 @@ void DoodleDiveGameplay::load_images() {
 	platformImage_ = new QImage("platform.png");
 	
 	monsterImage_ = new QImage("monster.png"); 
+
+	theDudeImage_ = new QImage("dude.png");
+	
+	fireballImage_ = new QImage("fireball.png"); 
 
 }
 
