@@ -4,9 +4,11 @@
 #include "platform.h"
 #include <QPoint>
 
+class DoodleDiveWindow; 
+
 class BadPlatform : public Platform {
 	public:
-		BadPlatform(int length) : Platform (length) {
+		BadPlatform(int length, DoodleDiveWindow* parent) : Platform (length, parent) {
 		 
 			moveRight_ = true; 
 		
@@ -16,7 +18,7 @@ class BadPlatform : public Platform {
 				moveRight_ = false; 
 		
 			//static_cast<QRect*>(this)->image
-	};
+		};
 	void move_horizontal () {
 			
 			int tempwidth = width() ; 

@@ -68,12 +68,13 @@ class DoodleDiveGameplay : public QFrame
 		bool gameOver_;  
 		
 		void update_timer();
-		 
-		QImage haloImage; 
-		QImage badplatformImage; 
-		QImage platformImage; 
-		QImage monsterImage; 
-		QImage 
+		
+		void load_images(); 
+		
+		QImage* haloImage_; 
+		//QImage badplatformImage_; 
+		QImage* platformImage_; 
+		QImage* monsterImage_; 
 		
 	
 	public slots:

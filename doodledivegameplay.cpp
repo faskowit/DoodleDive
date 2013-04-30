@@ -30,6 +30,8 @@ DoodleDiveGameplay::DoodleDiveGameplay(QWidget* parentWindow) :
 	
 	
 	gameOver_ = false; 
+	
+	load_images(); 
 
 } 
 
@@ -81,29 +83,29 @@ void DoodleDiveGameplay::populate_frame() {
 	
 	if(moveLength_ > 10) 
 		if (heightCounter % 24 == 0)
-			monsterList.push_back(new Monster());
+			monsterList.push_back(new Monster(parent_));
 			
 	if (parent_->get_level() > 4) {
 		if (heightCounter % (150-(10 * parent_->get_level())) == 0)
-			monsterList.push_back(new Monster()); 
+			monsterList.push_back(new Monster(parent_)); 
 	}
 	
 	if (heightCounter % 100 == 0) {
-		monsterList.push_back(new Monster()); 
+		monsterList.push_back(new Monster(parent_)); 
 	}
 
 	if (heightCounter % 50 == 0) 
-		platformList.push_back(new Platform(60)); 
+		platformList.push_back(new Platform(60, parent_)); 
 		
 	int badAppear = rand() % 4;
 	
 	if (heightCounter % 30 == 0) {
 		if (badAppear == 1) 
-			badPlatformList.push_back(new BadPlatform(5));
+			badPlatformList.push_back(new BadPlatform(5, parent_));
 	}
 	
 	if (heightCounter % 471 == 0)
-		haloList.push_back(new Halo());
+		haloList.push_back(new Halo(parent_));
 	
 	
 }
@@ -242,19 +244,19 @@ void DoodleDiveGameplay::paintEvent(QPaintEvent* e) {
 	if (pressStart_) {
 		painter.drawRect(static_cast<QRect>(*theDude_));
 		for (unsigned int i = 0; i < platformList.size(); i++) {
-			painter.drawRect(*platformList[i]);
+			painter.drawImage(*platformList[i], *platformImage_);
 		} 
 		for (unsigned int i = 0; i < badPlatformList.size(); i++) {
 			painter.drawRect(*badPlatformList[i]);
 		}
 		for (unsigned int i = 0; i < monsterList.size(); i++) {
-			painter.drawRect(*monsterList[i]);
+			painter.drawImage(*monsterList[i], *monsterImage_);
 		}
 		for (unsigned int i = 0; i < fireballList.size(); i++) {
 			painter.drawRect(*fireballList[i]);
 		}
 		for (unsigned int i = 0; i < haloList.size(); i++) {
-			painter.drawRect(*haloList[i]); 
+			painter.drawImage(*haloList[i], *haloImage_); 
 		}
 	} 
 	else if (gameOver_) {
@@ -390,7 +392,16 @@ void DoodleDiveGameplay::update_timer() {
 	startTimer(time_); 
 }
 
+void DoodleDiveGameplay::load_images() {
 
+
+	haloImage_ = new QImage("halo.png"); 
+	
+	platformImage_ = new QImage("platform.png");
+	
+	monsterImage_ = new QImage("monster.png"); 
+
+}
 
 
 

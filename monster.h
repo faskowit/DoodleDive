@@ -3,10 +3,12 @@
 
 #include <QRect>
 
+class DoodleDiveWindow; 
+
 class Monster : public Platform {
 
 	public: 
-		Monster() : Platform (30,30) {
+		Monster(DoodleDiveWindow* parent) : Platform (30,30, parent) {
 		
 			monsterImage(); 	
 		
