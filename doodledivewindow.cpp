@@ -91,7 +91,7 @@ DoodleDiveWindow::~DoodleDiveWindow() {
 
 /** Getters and Setters BELOW */ 
 
-int DoodleDiveWindow::get_health() {
+int DoodleDiveWindow::get_health() const {
 
 	return health_;
 }
@@ -101,7 +101,7 @@ void DoodleDiveWindow::set_health(int health) {
 	health_ = health;  
 }
 
-int DoodleDiveWindow::get_level() {
+int DoodleDiveWindow::get_level() const {
 
 	return level_;
 }
@@ -111,7 +111,7 @@ void DoodleDiveWindow::set_level(int level) {
 	level_ = level; 
 }
 
-double DoodleDiveWindow::get_score() {
+double DoodleDiveWindow::get_score() const {
 
 	return score_; 
 }

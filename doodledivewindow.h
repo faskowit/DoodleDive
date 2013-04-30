@@ -24,11 +24,11 @@ class DoodleDiveWindow : public QWidget  {
 	public:
 		DoodleDiveWindow();  
 		~DoodleDiveWindow(); 
-		int get_health(); 
+		int get_health() const; 
 		void set_health(int); 
-		int get_level(); 
+		int get_level() const; 
 		void set_level(int); 
-		double get_score(); 
+		double get_score() const; 
 		void set_score(double); 
 		DoodleDiveGameplay* get_gameplay(); 
 		void update_display(); 

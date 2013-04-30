@@ -14,7 +14,7 @@ DoodleDiveGameplay::DoodleDiveGameplay(QWidget* parentWindow) :
 	parent_ = static_cast<DoodleDiveWindow*>(parentWindow); 
 	
 	parent_->set_health(500); 
-	parent_->set_level(1); 
+	parent_->set_level(0); 
 	parent_->set_score(0); 
 	
 	setFocusPolicy(Qt::StrongFocus); 
@@ -81,7 +81,12 @@ void DoodleDiveGameplay::populate_frame() {
 	
 	if(moveLength_ > 10) 
 		if (heightCounter % 24 == 0)
+			monsterList.push_back(new Monster());
+			
+	if (parent_->get_level() > 4) {
+		if (heightCounter % (150-(10 * parent_->get_level())) == 0)
 			monsterList.push_back(new Monster()); 
+	}
 	
 	if (heightCounter % 100 == 0) {
 		monsterList.push_back(new Monster()); 
@@ -96,6 +101,9 @@ void DoodleDiveGameplay::populate_frame() {
 		if (badAppear == 1) 
 			badPlatformList.push_back(new BadPlatform(5));
 	}
+	
+	if (heightCounter % 471 == 0)
+		haloList.push_back(new Halo());
 	
 	
 }
@@ -133,7 +141,8 @@ void DoodleDiveGameplay::collisionCheck() {
 
 	bool healthChange = false; 
 	bool monsterHit = false;
-	bool hitByMonster = false;  
+	bool hitByMonster = false; 
+	bool haloHit = false; 
 
 	moveStop_ = false; 
 	QRect* theDudePtr = static_cast<QRect*>(theDude_); 
@@ -179,10 +188,24 @@ void DoodleDiveGameplay::collisionCheck() {
 		}
 	}
 	
+	for (unsigned int i=0; i < haloList.size(); i++) {
+		if (theDudePtr->intersects(*(static_cast<QRect*>(haloList[i])))) { 
+			haloHit = true;   
+		}
+	}
+	
+	if (haloHit) {
+	
+	int temphealth = parent_->get_health(); 
+	temphealth += 30;
+	parent_->set_health(temphealth);
+	 
+	}
+	
 	if (hitByMonster) {
 	
 	int temphealth = parent_->get_health(); 
-	temphealth -= 100;
+	temphealth -= 75;
 	parent_->set_health(temphealth);
 	
 	}
@@ -191,7 +214,11 @@ void DoodleDiveGameplay::collisionCheck() {
 	
 		int temphealth = parent_->get_health(); 
 		temphealth += 20;
-		parent_->set_health(temphealth);
+		parent_->set_health(temphealth); 
+		
+		int tempscore = parent_->get_score(); 
+		tempscore += 30;
+		parent_->set_score(tempscore); 
 	}
 	
 	if (healthChange) {
@@ -226,6 +253,19 @@ void DoodleDiveGameplay::paintEvent(QPaintEvent* e) {
 		for (unsigned int i = 0; i < fireballList.size(); i++) {
 			painter.drawRect(*fireballList[i]);
 		}
+		for (unsigned int i = 0; i < haloList.size(); i++) {
+			painter.drawRect(*haloList[i]); 
+		}
+	} 
+	else if (gameOver_) {
+	
+		game_over(); 
+		//painter
+	}
+	else {
+	
+		painter.drawPixmap(rect(), QPixmap("opening.png"));
+	
 	}
 		
 
@@ -310,6 +350,8 @@ void DoodleDiveGameplay::move_everything_up() {
 		parent_->set_level(templevel); 
 	
 	}
+	
+//~~~~~~~~~~~~~~~~~~
 
 	if(!moveStop_) {	
 
@@ -319,7 +361,10 @@ void DoodleDiveGameplay::move_everything_up() {
 		for (unsigned int i=0; i < badPlatformList.size(); i++) {
 			badPlatformList[i]->move_up(moveLength_);
 		} 		
-	}
+		for (unsigned int i=0; i < haloList.size(); i++)
+			haloList[i]->move_up(moveLength_);
+		}
+
 }
 
 void DoodleDiveGameplay::keyPressEvent(QKeyEvent* e) {

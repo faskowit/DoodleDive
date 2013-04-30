@@ -17,6 +17,9 @@
 #include "badplatform.h"
 #include "monster.h"
 #include "fireball.h"
+#include "halo.h"
+#include <QPixmap>
+#include <QImage>
 
 using namespace std; 
 
@@ -49,6 +52,7 @@ class DoodleDiveGameplay : public QFrame
 		vector<BadPlatform*> badPlatformList; 
 		vector<Monster*> monsterList; 
 		vector<Fireball*> fireballList; 
+		vector<Halo*> haloList; 
 		
 		bool moveStop_; 
 		int moveLength_; 
@@ -63,7 +67,14 @@ class DoodleDiveGameplay : public QFrame
 		bool pressPause_; 
 		bool gameOver_;  
 		
-		void update_timer(); 
+		void update_timer();
+		 
+		QImage haloImage; 
+		QImage badplatformImage; 
+		QImage platformImage; 
+		QImage monsterImage; 
+		QImage 
+		
 	
 	public slots:
 		void start_DoodleDive(); 
