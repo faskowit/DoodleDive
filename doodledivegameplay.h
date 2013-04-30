@@ -28,6 +28,8 @@ class DoodleDiveWindow;
 class DoodleDude;
 class Platform; 
 
+/** @DoodleDiveGameplay the "board" of the game.  where all of the gameplay is implemented */
+
 class DoodleDiveGameplay : public QFrame 
 {
 		Q_OBJECT 

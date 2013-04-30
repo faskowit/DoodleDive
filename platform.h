@@ -4,6 +4,7 @@
 #include <iostream>
 #include <QRect>
 
+/** baseplatform that others will derrive from*/
 class Platform: public QRect { 
 	public:
 		Platform(int); 

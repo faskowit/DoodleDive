@@ -49,6 +49,7 @@ void DoodleDiveGameplay::game_over() {
 	
 }
 
+/** Initialize all of the variables to start the game, restart if in middle of game*/ 
 void DoodleDiveGameplay::start_DoodleDive() {
 	
 	if (pressStart_ == false) {
@@ -63,7 +64,7 @@ void DoodleDiveGameplay::start_DoodleDive() {
 	} 
 	
 	else {
-	
+	  
 		depopulate_lists();
 	
 		parent_->set_health(500); 
@@ -102,6 +103,9 @@ void DoodleDiveGameplay::pause_DoodleDive() {
 	}	
 }
 
+/**Put new things into the game play at certain points in the game decided by moveHeight
+* and move length
+*/
 void DoodleDiveGameplay::populate_frame() {
 	
 	if(moveLength_ > 10) 
@@ -133,6 +137,7 @@ void DoodleDiveGameplay::populate_frame() {
 	
 }
 
+/**for when we want to restart game*/
 void DoodleDiveGameplay::depopulate_lists() {
 
 	for (unsigned int i=0; i < platformList.size(); i++) {
@@ -149,6 +154,8 @@ void DoodleDiveGameplay::depopulate_lists() {
 	}	 
 
 }
+
+/** every interval of the timer this will execute, here we check for collisions and see if moving*/
 void DoodleDiveGameplay::timerEvent(QTimerEvent* e) {
 	
 	if(e) {}; 
@@ -266,7 +273,7 @@ void DoodleDiveGameplay::collisionCheck() {
 	if (parent_->get_health() < 1)
 		gameOver_ = true; 
 }
-
+/** paint everything for the game here*/
 void DoodleDiveGameplay::paintEvent(QPaintEvent* e) {	
 
 	if(e) {};  
@@ -308,7 +315,7 @@ void DoodleDiveGameplay::paintEvent(QPaintEvent* e) {
 		
 
 }
-
+/** handle mouse press events to move theDude!!!! the closer the mouse is to the bottom, the farther he moves*/
 void DoodleDiveGameplay::mousePressEvent(QMouseEvent *e) {
 
 	int mouseX, mouseY;
@@ -351,11 +358,7 @@ void DoodleDiveGameplay::mousePressEvent(QMouseEvent *e) {
 
 }
 
-/*void DoodleDiveGameplay::mouseDoubleClickEvent(QMouseEvent *e) {
-
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-}*/ 
-
+/**moves related not explicitly to moving up and/or not going to stop when in contact with platform*/
 void DoodleDiveGameplay::move_others() { 
 
 	for (unsigned int i=0; i < badPlatformList.size(); i++) 
@@ -368,7 +371,7 @@ void DoodleDiveGameplay::move_others() {
 		fireballList[i]->fired_shot(); 
 	
 }
-
+/** move stuff up, will stop when in contact with platform, also increases the rate of moving upwards*/
 void DoodleDiveGameplay::move_everything_up() {
 
 	if (heightCounter % 20 == 0) 
@@ -389,7 +392,7 @@ void DoodleDiveGameplay::move_everything_up() {
 	
 	}
 	
-//~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	if(!moveStop_) {	
 
@@ -405,6 +408,7 @@ void DoodleDiveGameplay::move_everything_up() {
 
 }
 
+/**shooting fireballs.  YOU ONLY GET ONE AT A TIME. so you cannot spam*/
 void DoodleDiveGameplay::keyPressEvent(QKeyEvent* e) {
 
 	if (e->key() == Qt::Key_Space) { 
