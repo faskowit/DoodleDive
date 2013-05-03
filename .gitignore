@@ -14,3 +14,5 @@
 
 *.cpp~
 *.h~
+*.pro
+./game_faskowit
