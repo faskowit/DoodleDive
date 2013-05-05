@@ -71,6 +71,7 @@ class DoodleDiveGameplay : public QFrame
 		bool enterName_;  
 		bool pressPause_; 
 		bool gameOver_;  
+		bool newGame_; 
 		
 		void update_timer();
 		

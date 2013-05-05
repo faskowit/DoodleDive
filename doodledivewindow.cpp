@@ -1,11 +1,17 @@
 #include "doodledivewindow.h"
 
-struct Scores {
-	string name_; 
-	float score_; 
-}; 
+
 
 void DoodleDiveWindow::write_scores() {
+
+	std::cout << "WRITING" << std::endl; 
+	
+	Scores temp;
+	
+	temp.score_ = get_score();
+	temp.name_ = playerName_.toStdString();
+	
+	scoresList.push_back(temp); 
 
 	ofstream fout;
 	
@@ -22,6 +28,8 @@ void DoodleDiveWindow::write_scores() {
 
 void DoodleDiveWindow::read_scores() {
 
+	std::cout<<"READING" << std::endl;  
+
 	ifstream fin;
 	Scores temp;  
 	float score, scoreHigh;  
@@ -32,6 +40,8 @@ void DoodleDiveWindow::read_scores() {
 	
 	fin.open("doodleresults.txt");
 	
+	std::cout<<"open" << std::endl;
+	
 	if (fin.fail())
 		return; 
 	
@@ -40,7 +50,11 @@ void DoodleDiveWindow::read_scores() {
 	if (fin.bad()) 
 		return; 
 	
+	std::cout<<"going into eof loop" << std::endl;
+	
 	while (!(fin.eof())) {
+	
+		std::cout<<"in loop" << std::endl;
 	
 		fin >> score; 
 		
@@ -57,13 +71,22 @@ void DoodleDiveWindow::read_scores() {
 	
 	}
 	
+	std::cout<<"after loop" << std::endl;
+	
 	highScore_->name_ = nameHigh; 
+	
+	std::cout << "inbetween" << std::endl;
+	
 	highScore_->score_ = scoreHigh; 
+	
+	std::cout<<"after assigning high scores" << std::endl;
 
 }
 
 /** This constuctor will be the window that houses the gameplay and buttons */
 DoodleDiveWindow::DoodleDiveWindow() {
+
+	highScore_ = new Scores(); 
 
 	read_scores(); 
 	
@@ -95,16 +118,20 @@ DoodleDiveWindow::DoodleDiveWindow() {
 	
 	/** Code to implement to show scores */
 	
+	std::cout<<"CHECKKKK"<< std::endl;
 	
-	QString highScoreName; 
-	highScoreName.fromStdString(highScore_->name_); 
+	QString* highName = new QString(QString::fromStdString(highScore_->name_)); 
+	//highName = &(QString::fromStdString(highScore_->name_));
+	 
+	
+	highScoreName_ = new QLabel(*highName); 
 	
 	QLabel* scoreLabel = new QLabel("SCORE"); 
 	QLabel* levelLabel = new QLabel("LEVEL"); 
 	QLabel* healthLabel = new QLabel("HEALTH"); 
 	QLabel* nameLabel = new QLabel("NAME"); 
 	QLabel* highLabel = new QLabel("HIGH SCORE");
-	QLabel* highNameLabel = new QLabel(highScoreName); 
+	QLabel* highNameLabel = new QLabel(*highName); 
 	
 	scoreLabel->setAlignment(Qt::AlignHCenter | Qt::AlignBottom); 
 	levelLabel->setAlignment(Qt::AlignHCenter | Qt::AlignBottom); 

@@ -42,10 +42,9 @@ class DoodleDiveWindow : public QWidget  {
 		void update_display(); 
 		QString get_name() const; 
 		void set_name(QString); 
-		 
+		void write_scores(); 
 	private: 
 		void read_scores();
-		void write_scores();
 	
 		DoodleDiveGameplay* gameplay_; 
 		
@@ -60,13 +59,21 @@ class DoodleDiveWindow : public QWidget  {
 		QLCDNumber* levelLCD_; 
 		QLCDNumber* healthLCD_;
 		QLCDNumber* highLCD_; 
+		
+		QLabel* highScoreName_;
 		 
 		int health_; 
 		int level_; 
 		double score_; 
 		
+		
 		vector<Scores> scoresList; 
 		Scores* highScore_; 	
+}; 
+
+struct Scores {
+	string name_; 
+	float score_; 
 }; 
 
 #endif

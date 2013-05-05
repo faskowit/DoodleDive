@@ -29,7 +29,7 @@ DoodleDiveGameplay::DoodleDiveGameplay(QWidget* parentWindow) :
 	moveStop_ = false; 
 	moveLength_ = 1; 
 	
-	
+	newGame_ = false;
 	gameOver_ = false; 
 	
 	load_images(); 
@@ -47,6 +47,11 @@ void DoodleDiveGameplay::game_over() {
 	moveStop_ = true; 
 	
 	killTimer(time_); 
+	
+	if (newGame_)
+		parent_->write_scores(); 
+	
+	newGame_ = false;
 	
 }
 
@@ -71,9 +76,11 @@ void DoodleDiveGameplay::start_DoodleDive() {
 	
 	if (pressStart_ == false && enterName_ == true) {
 	
-		pressStart_ = true; 
+		pressStart_ = true;
+		newGame_ = true; 
 
 		gameSpeed_ = 35; 
+
 
 		time_ = startTimer(gameSpeed_);  //start time at gameSpeed
 	
@@ -96,6 +103,8 @@ void DoodleDiveGameplay::start_DoodleDive() {
 		heightCounter = 0;
 		moveStop_ = false; 
 		moveLength_ = 1; 
+		
+		newGame_ = false; 
 	
 	
 		gameOver_ = false; 
