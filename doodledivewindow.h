@@ -10,6 +10,13 @@
 #include <QObject>
 #include <QLabel>
 #include "doodledivegameplay.h"
+#include <QLineEdit>
+#include <QString>
+#include <fstream>
+#include <vector>
+#include <string>
+
+using namespace std; 
 
 /** @DoodleDiveWindow class will hold buttons and gameplay
 * it will also hold the score, level, and health
@@ -17,6 +24,7 @@
 */
 
 class DoodleDiveGameplay;
+struct Scores; 
 
 class DoodleDiveWindow : public QWidget  { 
 		Q_OBJECT
@@ -32,20 +40,33 @@ class DoodleDiveWindow : public QWidget  {
 		void set_score(double); 
 		DoodleDiveGameplay* get_gameplay(); 
 		void update_display(); 
+		QString get_name() const; 
+		void set_name(QString); 
+		 
 	private: 
+		void read_scores();
+		void write_scores();
+	
 		DoodleDiveGameplay* gameplay_; 
 		
 		QPushButton* start_; 
 		QPushButton* pause_; 
 		QPushButton* quit_; 
 		
+		QLineEdit* nameBox_;
+		QString playerName_; 
+		
 		QLCDNumber* scoreLCD_;
 		QLCDNumber* levelLCD_; 
 		QLCDNumber* healthLCD_;
+		QLCDNumber* highLCD_; 
 		 
 		int health_; 
 		int level_; 
 		double score_; 
+		
+		vector<Scores> scoresList; 
+		Scores* highScore_; 	
 }; 
 
 #endif

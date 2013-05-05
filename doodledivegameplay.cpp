@@ -21,6 +21,7 @@ DoodleDiveGameplay::DoodleDiveGameplay(QWidget* parentWindow) :
 	
 	pressStart_ = false;
 	pressPause_ = false;  
+	enterName_ = false;
 	
 	theDude_ = new DoodleDude(); 
 	 
@@ -49,10 +50,26 @@ void DoodleDiveGameplay::game_over() {
 	
 }
 
+void DoodleDiveGameplay::check_name() {
+
+	QString name = parent_-> get_name();
+	
+	if (name == "" || name == "ENTER NAME") {
+	
+		enterName_ = false;
+	}
+	else {
+		parent_-> set_name (name); 
+		enterName_ = true; 
+	}
+}
+
 /** Initialize all of the variables to start the game, restart if in middle of game*/ 
 void DoodleDiveGameplay::start_DoodleDive() {
+
+	check_name(); 
 	
-	if (pressStart_ == false) {
+	if (pressStart_ == false && enterName_ == true) {
 	
 		pressStart_ = true; 
 

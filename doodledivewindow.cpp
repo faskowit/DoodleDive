@@ -1,7 +1,71 @@
 #include "doodledivewindow.h"
 
+struct Scores {
+	string name_; 
+	float score_; 
+}; 
+
+void DoodleDiveWindow::write_scores() {
+
+	ofstream fout;
+	
+	fout.open("doodleresults.txt");
+	
+	for (unsigned int i=0; i < scoresList.size(); i++) {
+	
+		fout << scoresList[i].name_ << " " 
+			<< scoresList[i].score_ << endl; 
+	
+	}
+
+}
+
+void DoodleDiveWindow::read_scores() {
+
+	ifstream fin;
+	Scores temp;  
+	float score, scoreHigh;  
+	string name, nameHigh; 
+	
+	scoreHigh = 0; 
+	nameHigh = "none"; 
+	
+	fin.open("doodleresults.txt");
+	
+	if (fin.fail())
+		return; 
+	
+	fin >> name; 
+	
+	if (fin.bad()) 
+		return; 
+	
+	while (!(fin.eof())) {
+	
+		fin >> score; 
+		
+		if (score >= scoreHigh) {
+			scoreHigh = score; 
+			nameHigh = name; 
+		}
+	
+		temp.name_ = name;
+		temp.score_ = score; 
+		scoresList.push_back(temp);
+		
+		fin >> name; 	
+	
+	}
+	
+	highScore_->name_ = nameHigh; 
+	highScore_->score_ = scoreHigh; 
+
+}
+
 /** This constuctor will be the window that houses the gameplay and buttons */
 DoodleDiveWindow::DoodleDiveWindow() {
+
+	read_scores(); 
 	
 	//std::cout << "BLLLLOOOP"<< std::endl; 
 	
@@ -20,6 +84,7 @@ DoodleDiveWindow::DoodleDiveWindow() {
 	start_ = new QPushButton("START");
 	pause_ = new QPushButton("PAUSE"); 
 	quit_ = new QPushButton("QUIT"); 
+	nameBox_ = new QLineEdit("ENTER NAME"); 
 	
 	//connect functions here
 	connect(quit_, SIGNAL(clicked()), qApp, SLOT(quit()));
@@ -31,23 +96,34 @@ DoodleDiveWindow::DoodleDiveWindow() {
 	/** Code to implement to show scores */
 	
 	
+	QString highScoreName; 
+	highScoreName.fromStdString(highScore_->name_); 
+	
 	QLabel* scoreLabel = new QLabel("SCORE"); 
 	QLabel* levelLabel = new QLabel("LEVEL"); 
 	QLabel* healthLabel = new QLabel("HEALTH"); 
+	QLabel* nameLabel = new QLabel("NAME"); 
+	QLabel* highLabel = new QLabel("HIGH SCORE");
+	QLabel* highNameLabel = new QLabel(highScoreName); 
 	
 	scoreLabel->setAlignment(Qt::AlignHCenter | Qt::AlignBottom); 
 	levelLabel->setAlignment(Qt::AlignHCenter | Qt::AlignBottom); 
 	healthLabel->setAlignment(Qt::AlignHCenter | Qt::AlignBottom); 
-	
+	nameLabel->setAlignment(Qt::AlignHCenter | Qt::AlignBottom); 
+	highLabel->setAlignment(Qt::AlignHCenter | Qt::AlignBottom); 
+	highNameLabel->setAlignment(Qt::AlignRight | Qt::AlignBottom); 
 	
 	scoreLCD_ = new QLCDNumber (4); 
 	levelLCD_ = new QLCDNumber (2); 
 	healthLCD_ = new QLCDNumber (3); 
+	highLCD_ = new QLCDNumber (4); 
 	
+	highLCD_-> setSegmentStyle(QLCDNumber::Outline);
 	scoreLCD_->setSegmentStyle(QLCDNumber::Outline);
 	levelLCD_->setSegmentStyle(QLCDNumber::Outline);
 	healthLCD_->setSegmentStyle(QLCDNumber::Outline);
 	
+	highLCD_->display(highScore_->score_);
 	scoreLCD_->display(score_); 
 	levelLCD_->display(level_); 
 	healthLCD_->display(health_); 
@@ -57,6 +133,13 @@ DoodleDiveWindow::DoodleDiveWindow() {
 	vertLayout->addWidget(start_); 
 	vertLayout->addWidget(pause_); 
 	vertLayout->addWidget(quit_);
+	
+	vertLayout->addWidget(nameLabel); 
+	vertLayout->addWidget(nameBox_); 
+	
+	vertLayout->addWidget(highLabel); 
+	vertLayout->addWidget(highNameLabel); 
+	vertLayout->addWidget(highLCD_); 
 	
 	vertLayout->addWidget(scoreLabel);
 	vertLayout->addWidget(scoreLCD_); 
@@ -90,6 +173,17 @@ DoodleDiveWindow::~DoodleDiveWindow() {
 }
 
 /** Getters and Setters BELOW */ 
+
+void DoodleDiveWindow::set_name(QString name) {
+
+	playerName_ = name;
+}
+
+QString DoodleDiveWindow::get_name() const {
+
+	return nameBox_->text();  
+
+}
 
 int DoodleDiveWindow::get_health() const {
 

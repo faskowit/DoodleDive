@@ -50,6 +50,7 @@ class DoodleDiveGameplay : public QFrame
 		
 		void collisionCheck();
 		void game_over(); 
+		void check_name(); 
 		
 		vector<Platform*> platformList; 
 		vector<BadPlatform*> badPlatformList; 
@@ -67,6 +68,7 @@ class DoodleDiveGameplay : public QFrame
 		void populate_frame();  
 		
 		bool pressStart_;
+		bool enterName_;  
 		bool pressPause_; 
 		bool gameOver_;  
 		
