@@ -66,7 +66,6 @@ class DoodleDiveWindow : public QWidget  {
 		int level_; 
 		double score_; 
 		
-		
 		vector<Scores> scoresList; 
 		Scores* highScore_; 	
 }; 

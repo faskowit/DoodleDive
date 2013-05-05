@@ -21,6 +21,8 @@
 #include <QPixmap>
 #include <QImage>
 #include <QBrush>
+#include <fstream>
+#include <string> 
 
 using namespace std; 
 
@@ -72,6 +74,7 @@ class DoodleDiveGameplay : public QFrame
 		bool pressPause_; 
 		bool gameOver_;  
 		bool newGame_; 
+		bool readBackgrounds_; 
 		
 		void update_timer();
 		
@@ -84,6 +87,8 @@ class DoodleDiveGameplay : public QFrame
 		QImage* fireballImage_;
 		
 		void depopulate_lists();
+		
+		vector<QPixmap*> backgroundList;
 	
 	public slots:
 		void start_DoodleDive(); 

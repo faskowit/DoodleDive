@@ -28,7 +28,7 @@ void DoodleDiveWindow::write_scores() {
 
 void DoodleDiveWindow::read_scores() {
 
-	std::cout<<"READING" << std::endl;  
+	//std::cout<<"READING" << std::endl;  
 
 	ifstream fin;
 	Scores temp;  
@@ -40,7 +40,7 @@ void DoodleDiveWindow::read_scores() {
 	
 	fin.open("doodleresults.txt");
 	
-	std::cout<<"open" << std::endl;
+	//std::cout<<"open" << std::endl;
 	
 	if (fin.fail())
 		return; 
@@ -50,11 +50,11 @@ void DoodleDiveWindow::read_scores() {
 	if (fin.bad()) 
 		return; 
 	
-	std::cout<<"going into eof loop" << std::endl;
+	//std::cout<<"going into eof loop" << std::endl;
 	
 	while (!(fin.eof())) {
 	
-		std::cout<<"in loop" << std::endl;
+		//std::cout<<"in loop" << std::endl;
 	
 		fin >> score; 
 		
@@ -71,15 +71,15 @@ void DoodleDiveWindow::read_scores() {
 	
 	}
 	
-	std::cout<<"after loop" << std::endl;
+	//std::cout<<"after loop" << std::endl;
 	
 	highScore_->name_ = nameHigh; 
 	
-	std::cout << "inbetween" << std::endl;
+	//std::cout << "inbetween" << std::endl;
 	
 	highScore_->score_ = scoreHigh; 
 	
-	std::cout<<"after assigning high scores" << std::endl;
+	//std::cout<<"after assigning high scores" << std::endl;
 
 }
 

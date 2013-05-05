@@ -109,7 +109,7 @@ void DoodleDiveGameplay::start_DoodleDive() {
 	
 		gameOver_ = false; 
 	
-		load_images(); 
+		//load_images(); 
 	}
 	
 }
@@ -310,13 +310,42 @@ void DoodleDiveGameplay::paintEvent(QPaintEvent* e) {
 		painter.drawPixmap(rect(), QPixmap("gameover.png"))	;
 	}
 	else if (pressStart_) {
-		if (heightCounter % 33 < 11) 
-			painter.drawPixmap(rect(), QPixmap("background1.png"));
-		else if (heightCounter % 33 < 22) 
-			painter.drawPixmap(rect(), QPixmap("background2.png"));
-		else 
-			painter.drawPixmap(rect(), QPixmap("background3.png"));
 	
+		if (readBackgrounds_ == false) {
+			if (heightCounter % 33 < 11) 
+				painter.drawPixmap(rect(), QPixmap("background1.png"));
+			else if (heightCounter % 33 < 22) 
+				painter.drawPixmap(rect(), QPixmap("background2.png"));
+			else 
+				painter.drawPixmap(rect(), QPixmap("background3.png"));
+		}
+		else {
+			int level = (parent_->get_level() % 3);
+			if (level == 0) {
+				if (heightCounter % 33 < 11) 
+					painter.drawPixmap(rect(), *backgroundList[0]);
+				else if (heightCounter % 33 < 22) 
+					painter.drawPixmap(rect(), *backgroundList[1]);
+				else 
+					painter.drawPixmap(rect(), *backgroundList[2]);
+			}
+			if (level == 1) {
+				if (heightCounter % 33 < 11) 
+					painter.drawPixmap(rect(), *backgroundList[3]);
+				else if (heightCounter % 33 < 22) 
+					painter.drawPixmap(rect(), *backgroundList[4]);
+				else 
+					painter.drawPixmap(rect(), *backgroundList[5]);
+			}
+			else {
+				if (heightCounter % 33 < 11) 
+					painter.drawPixmap(rect(), *backgroundList[6]);
+				else if (heightCounter % 33 < 22) 
+					painter.drawPixmap(rect(), *backgroundList[7]);
+				else 
+					painter.drawPixmap(rect(), *backgroundList[8]);
+			}
+		}
 		painter.drawImage(static_cast<QRect>(*theDude_), *theDudeImage_);
 		for (unsigned int i = 0; i < platformList.size(); i++) {
 			painter.drawImage(*platformList[i], *platformImage_);
@@ -460,6 +489,32 @@ void DoodleDiveGameplay::update_timer() {
 
 void DoodleDiveGameplay::load_images() {
 
+	ifstream fin; 
+	fin.open("backgrounds.txt");
+	string tempString;
+	
+	if (fin.fail()) {
+		readBackgrounds_ = false; 
+		return; 
+	}
+	
+	fin >> tempString; 
+	
+	if (fin.bad()) {
+		readBackgrounds_ = false; 
+		return; 
+	}
+	
+	while (!(fin.eof())) {
+	
+		QString tempPixName(QString::fromStdString(tempString));
+		
+		QPixmap* background = new QPixmap(tempPixName); 
+		
+		backgroundList.push_back(background); 
+		
+		fin >> tempString; 	
+	}
 
 	haloImage_ = new QImage("halo.png"); 
 	
@@ -470,6 +525,8 @@ void DoodleDiveGameplay::load_images() {
 	theDudeImage_ = new QImage("dude.png");
 	
 	fireballImage_ = new QImage("fireball.png"); 
+	
+	readBackgrounds_ = true; 
 
 }
 
