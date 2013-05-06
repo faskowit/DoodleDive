@@ -1,12 +1,12 @@
 # Game - Programming Assignments Private Repository
 ### Student Information
-  + Name: Tommy Trojan
-  + USC Email: ttrojan@usc.edu
-  + USC ID: 0123456789
+  + Name: Josh Faskowitz
+  + USC Email: faskowit@usc.edu
+  + USC ID: 5337050494
 
 ### Game Information
-  + Game Name: myAwsomeGame
-  + Game Description: One sentence game description
+  + Game Name: DoodleDive 
+  + Game Description: Fall down and avoid the mosters! 
   + [Game Design Doc](GameDesignDoc.md)
 
 
@@ -14,11 +14,11 @@
 The grader should use the following procedure to compile and run the code:
 ```shell
 #Compile Instructions
-echo "Write command here"
+qmake -project, qmake, then make.  
 #Doxygen Instructions
-echo "Write command here"
+doxygen -g, doxygen Doxygen 
 #Command to run
-echo "Write command here"
+run the ./game_faskowit executable file
 ```
 
 ### Screenshots -- [Optional]
