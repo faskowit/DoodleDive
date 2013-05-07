@@ -11,6 +11,8 @@ void DoodleDiveGameplay::dummy(int bleh) {
 DoodleDiveGameplay::DoodleDiveGameplay(QWidget* parentWindow) : 
 	QFrame(parentWindow) {
 	
+	dummy(10101); 
+	
 	parent_ = static_cast<DoodleDiveWindow*>(parentWindow); 
 	
 	parent_->set_health(500); 
@@ -178,7 +180,10 @@ void DoodleDiveGameplay::depopulate_lists() {
 		delete haloList[i]; 
 		haloList.erase(haloList.begin() + i);
 	}	 
-
+	for (unsigned int i=0; i < monsterList.size(); i++) {
+		delete monsterList[i];
+		monsterList.erase(monsterList.begin() + i);
+	}
 }
 
 /** every interval of the timer this will execute, here we check for collisions and see if moving*/
@@ -227,20 +232,31 @@ void DoodleDiveGameplay::collisionCheck() {
 		}
 	}
 	for (unsigned int i=0; i < badPlatformList.size(); i++) {
-		if (theDudePtr->intersects(*(static_cast<QRect*>(badPlatformList[i])))) {
-			//moveStop_ = true; 
-			moveLength_ = 1; 
-			healthChange = true; 
+		if (badPlatformList[i]->y() > 0) {
+			if (theDudePtr->intersects(*(static_cast<QRect*>(badPlatformList[i])))) {
+				//moveStop_ = true; 
+				moveLength_ = 1; 
+				healthChange = true; 
+			}
+		}
+		else {
+			delete badPlatformList[i]; 
+			badPlatformList.erase(badPlatformList.begin() + i);
 		}	
 	}
 	for (unsigned int i=0; i < monsterList.size(); i++) {
-		if (theDudePtr->intersects(*(static_cast<QRect*>(monsterList[i])))) {
-			moveStop_ = true;
-			moveLength_ = 1; 
-			hitByMonster = true;   
+		if (monsterList[i]->y() > 0) {
+			if (theDudePtr->intersects(*(static_cast<QRect*>(monsterList[i])))) {
+				moveStop_ = true;
+				moveLength_ = 1; 
+				hitByMonster = true;   
+			}
+		}
+		else {
+			delete monsterList[i]; 
+			monsterList.erase(monsterList.begin() + i);
 		}
 	}
-	
 	for (unsigned int i=0; i < fireballList.size(); i++) { 
 		for (unsigned int j=0; j < monsterList.size(); j++) {
 			if (static_cast<QRect*>(monsterList[j])->intersects
@@ -256,8 +272,14 @@ void DoodleDiveGameplay::collisionCheck() {
 	}
 	
 	for (unsigned int i=0; i < haloList.size(); i++) {
-		if (theDudePtr->intersects(*(static_cast<QRect*>(haloList[i])))) { 
-			haloHit = true;   
+		if (haloList[i]->y() > 0) {
+			if (theDudePtr->intersects(*(static_cast<QRect*>(haloList[i])))) { 
+				haloHit = true;   
+			}
+		}
+		else  {
+			delete haloList[i]; 
+			haloList.erase(haloList.begin() + i);
 		}
 	}
 	
@@ -273,6 +295,8 @@ void DoodleDiveGameplay::collisionCheck() {
 	
 	int temphealth = parent_->get_health(); 
 	temphealth -= 75;
+	if (temphealth < 0)
+		temphealth = 0; 
 	parent_->set_health(temphealth);
 	
 	}
@@ -320,8 +344,9 @@ void DoodleDiveGameplay::paintEvent(QPaintEvent* e) {
 				painter.drawPixmap(rect(), QPixmap("background3.png"));
 		}
 		else {
-			int level = (parent_->get_level() % 3);
-			if (level == 0) {
+			int level = ((parent_->get_level()) % 3);
+			//cout << level << endl;
+			if (level == 1) {
 				if (heightCounter % 33 < 11) 
 					painter.drawPixmap(rect(), *backgroundList[0]);
 				else if (heightCounter % 33 < 22) 
@@ -329,7 +354,7 @@ void DoodleDiveGameplay::paintEvent(QPaintEvent* e) {
 				else 
 					painter.drawPixmap(rect(), *backgroundList[2]);
 			}
-			if (level == 1) {
+			else if (level == 0) {
 				if (heightCounter % 33 < 11) 
 					painter.drawPixmap(rect(), *backgroundList[3]);
 				else if (heightCounter % 33 < 22) 
@@ -367,8 +392,7 @@ void DoodleDiveGameplay::paintEvent(QPaintEvent* e) {
 	else {
 		painter.drawPixmap(rect(), QPixmap("opening.png"));
 	}
-		
-
+	
 }
 /** handle mouse press events to move theDude!!!! the closer the mouse is to the bottom, the farther he moves*/
 void DoodleDiveGameplay::mousePressEvent(QMouseEvent *e) {
@@ -444,6 +468,7 @@ void DoodleDiveGameplay::move_everything_up() {
 		int templevel = parent_->get_level(); 
 		templevel += 1;
 		parent_->set_level(templevel); 
+		//update_timer(); 
 	
 	}
 	
@@ -507,6 +532,8 @@ void DoodleDiveGameplay::load_images() {
 	
 	while (!(fin.eof())) {
 	
+		//std::cout << tempString << std::endl; 
+	
 		QString tempPixName(QString::fromStdString(tempString));
 		
 		QPixmap* background = new QPixmap(tempPixName); 
@@ -515,6 +542,7 @@ void DoodleDiveGameplay::load_images() {
 		
 		fin >> tempString; 	
 	}
+	
 
 	haloImage_ = new QImage("halo.png"); 
 	
