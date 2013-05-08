@@ -3,15 +3,17 @@
 #include "doodledude.h"
 #include "badplatform.h"
 
+/** dummy function a move connvient way to debug with command line*/
 void DoodleDiveGameplay::dummy(int bleh) {
 
 	std::cout << "BLAHHH: " << bleh << std::endl; 
 }
 
+/** constructor where many of the variables are set */
 DoodleDiveGameplay::DoodleDiveGameplay(QWidget* parentWindow) : 
 	QFrame(parentWindow) {
 	
-	dummy(10101); 
+	//dummy(10101); 
 	
 	parent_ = static_cast<DoodleDiveWindow*>(parentWindow); 
 	
@@ -46,6 +48,9 @@ DoodleDiveGameplay::~DoodleDiveGameplay() {
 
 }
 
+/** game over stops the movement, writes scores to the file, kills timer, and enables another game
+* to start by setting newGame bool false
+*/
 void DoodleDiveGameplay::game_over() {
 
 	moveStop_ = true; 
@@ -59,6 +64,9 @@ void DoodleDiveGameplay::game_over() {
 	
 }
 
+/** won't let game start unless the name input is not blank or "ENTER NAME" which is what
+* it is already initialized to
+*/
 void DoodleDiveGameplay::check_name() {
 
 	QString name = parent_-> get_name();
@@ -93,6 +101,8 @@ void DoodleDiveGameplay::start_DoodleDive() {
 	
 	else {
 	  
+	  	/** similar resetting of stuff from constructor */
+	  
 		depopulate_lists();
 	
 		parent_->set_health(500); 
@@ -114,11 +124,12 @@ void DoodleDiveGameplay::start_DoodleDive() {
 	
 		gameOver_ = false; 
 	
-		//load_images(); 
+		/** no need to load images again though */
 	}
 	
 }
 
+/** kill timer, then upon clicking again start timer */
 void DoodleDiveGameplay::pause_DoodleDive() {
 
 	if (pressStart_ == true) {
@@ -135,7 +146,8 @@ void DoodleDiveGameplay::pause_DoodleDive() {
 }
 
 /**Put new things into the game play at certain points in the game decided by moveHeight
-* and move length
+* and move length.   
+* ~~ NOTE ~~ : higher levels get harder as levels > 4. Increasingly, more monster will spawn.
 */
 void DoodleDiveGameplay::populate_frame() {
 	
@@ -143,7 +155,7 @@ void DoodleDiveGameplay::populate_frame() {
 		if (heightCounter % 24 == 0)
 			monsterList.push_back(new Monster());
 			
-	if (parent_->get_level() > 4) {
+	if (parent_->get_level() > 3) {
 		if (heightCounter % (150-(10 * parent_->get_level())) == 0)
 			monsterList.push_back(new Monster()); 
 	}
@@ -168,7 +180,7 @@ void DoodleDiveGameplay::populate_frame() {
 	
 }
 
-/**for when we want to restart game*/
+/**for when we want to restart game, clear the lists of stuff*/
 void DoodleDiveGameplay::depopulate_lists() {
 
 	for (unsigned int i=0; i < platformList.size(); i++) {
@@ -189,7 +201,9 @@ void DoodleDiveGameplay::depopulate_lists() {
 	}
 }
 
-/** every interval of the timer this will execute, here we check for collisions and see if moving*/
+/** every interval of the timer this will execute, here we check for collisions and see if moving
+* then we repaint everything after processing all move, populate, and check collision stuff 
+*/
 void DoodleDiveGameplay::timerEvent(QTimerEvent* e) {
 	
 	if(e) {}; 
@@ -212,6 +226,11 @@ void DoodleDiveGameplay::timerEvent(QTimerEvent* e) {
 
 }
 
+/** Where we see if theDude has collided with any of the platforms or monsters, or if the bullets
+* have collided with any of the monsters 
+* Also, if item is in the list and it is out of view, it is deallocated and removed from list. 
+* In this function we also handle the changes to score, health, and level based on gameplay
+*/
 void DoodleDiveGameplay::collisionCheck() {
 
 	bool healthChange = false; 
@@ -290,10 +309,14 @@ void DoodleDiveGameplay::collisionCheck() {
 		}
 	}
 	
+	/** Handle the gameplay events below */
+	
 	if (haloHit) {
 	
 	int temphealth = parent_->get_health(); 
 	temphealth += 30;
+	if (temphealth > 1000)
+		temphealth = 999; 
 	parent_->set_health(temphealth);
 	 
 	}
@@ -312,6 +335,8 @@ void DoodleDiveGameplay::collisionCheck() {
 	
 		int temphealth = parent_->get_health(); 
 		temphealth += 20;
+		if (temphealth > 1000)
+			temphealth = 999;
 		parent_->set_health(temphealth); 
 		
 		int tempscore = parent_->get_score(); 
@@ -322,7 +347,7 @@ void DoodleDiveGameplay::collisionCheck() {
 	if (healthChange) {
 	
 		int temphealth = parent_->get_health(); 
-		temphealth--;
+		temphealth -= 4;
 		parent_->set_health(temphealth);
 		parent_->update_display(); 
 	}
@@ -352,7 +377,6 @@ void DoodleDiveGameplay::paintEvent(QPaintEvent* e) {
 		}
 		else {
 			int level = ((parent_->get_level()) % 3);
-			//cout << level << endl;
 			if (level == 1) {
 				if (heightCounter % 33 < 11) 
 					painter.drawPixmap(rect(), *backgroundList[0]);
@@ -450,8 +474,11 @@ void DoodleDiveGameplay::move_others() {
 	for (unsigned int i=0; i < badPlatformList.size(); i++) 
 		badPlatformList[i]->move_horizontal();
 		
-	for (unsigned int i=0; i < monsterList.size(); i++)
+	for (unsigned int i=0; i < monsterList.size(); i++) {
 		monsterList[i]->move_up(moveLength_ + 2);
+		if (moveStop_ && monsterList.size()> 0)
+			monsterList[i]->monster_attack(theDude_);
+	}
 			
 	for (unsigned int i=0; i < fireballList.size(); i++)
 		fireballList[i]->fired_shot(); 
@@ -464,13 +491,18 @@ void DoodleDiveGameplay::move_others() {
 			fireballList[i]->tracking(); 
 	}
 	
+	
 }
 /** move stuff up, will stop when in contact with platform, also increases the rate of moving upwards*/
 void DoodleDiveGameplay::move_everything_up() {
 
+	/** below are aspects dependent on movement of theDude */
+
+	/** if move down 20 units, add to how fast theDude falls*/
 	if (heightCounter % 20 == 0) 
 		moveLength_ = (moveLength_ + 1);
 		
+	/** start to accumulate score if theDude is falling fast */
 	if (moveLength_ > 10) {
 	
 		int tempscore = parent_->get_score(); 
@@ -478,16 +510,16 @@ void DoodleDiveGameplay::move_everything_up() {
 		parent_->set_score(tempscore); 
 	}
 	
-	if (heightCounter % 513 == 0) {
+	/** level up here */
+	if (heightCounter % 413 == 0) {
 	
 		int templevel = parent_->get_level(); 
 		templevel += 1;
-		parent_->set_level(templevel); 
-		//update_timer(); 
+		parent_->set_level(templevel);  
 	
 	}
 	
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	/** move stuff up below if not stopped on a platform */
 
 	if(!moveStop_) {	
 
@@ -503,7 +535,9 @@ void DoodleDiveGameplay::move_everything_up() {
 
 }
 
-/**shooting fireballs.  YOU ONLY GET ONE AT A TIME. so you cannot spam*/
+/**shooting fireballs.  YOU ONLY GET ONE AT A TIME. so you cannot spam
+* activate monster tracking by pressing G while the fireball is shot.
+*/
 void DoodleDiveGameplay::keyPressEvent(QKeyEvent* e) {
 
 	if (e->key() == Qt::Key_Space) { 
@@ -519,16 +553,16 @@ void DoodleDiveGameplay::keyPressEvent(QKeyEvent* e) {
 		}
 	}
 	if (e->key() == Qt::Key_G) {
-		if (fireballList.size() < 1)
-			fireballList.push_back(new Fireball(theDude_)); 
+		//if (fireballList.size() < 1)
+			//fireballList.push_back(new Fireball(theDude_)); 
 		if (monsterList.size() > 0) {
 				fireballList[0]->set_tracking_loc
 						(monsterList[monsterList.size()-1]);
 			monsterTracking_ = 100 + ((rand() % 5) * 20); 
 			}
 		else {
-			delete fireballList[0]; 
-			fireballList.erase(fireballList.begin()); 
+			//delete fireballList[0]; 
+			//fireballList.erase(fireballList.begin()); 
 			monsterTracking_ = 0; 
 		}
 	}
@@ -544,6 +578,9 @@ void DoodleDiveGameplay::update_timer() {
 	startTimer(time_); 
 }
 
+/** Load image names from a file, then load in images for background all at same time, so as not to
+* slow down program.  If the file does not load names correctly, load hard-coded images.
+*/
 void DoodleDiveGameplay::load_images() {
 
 	ifstream fin; 
@@ -564,30 +601,18 @@ void DoodleDiveGameplay::load_images() {
 	
 	while (!(fin.eof())) {
 	
-		//std::cout << tempString << std::endl; 
-	
 		QString tempPixName(QString::fromStdString(tempString));
-		
 		QPixmap* background = new QPixmap(tempPixName); 
-		
 		backgroundList.push_back(background); 
-		
 		fin >> tempString; 	
 	}
 	
-
 	haloImage_ = new QImage("halo.png"); 
-	
 	platformImage_ = new QImage("platform.png");
-	
 	monsterImage_ = new QImage("monster.png"); 
-
 	theDudeImage_ = new QImage("dude.png");
-	
 	fireballImage_ = new QImage("fireball.png"); 
-	
 	readBackgrounds_ = true; 
-
 }
 
 

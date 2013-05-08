@@ -4,6 +4,9 @@
 #include "platform.h"
 #include <QPoint> 
 
+/** @BadPlatform a platform that expands to the right. It inflicts damage when in contact with theDude
+* In gameplay, it expands even when theDude is resting on a platform
+*/
 class BadPlatform : public Platform {
 	public:
 		BadPlatform(int length) : Platform (length) {

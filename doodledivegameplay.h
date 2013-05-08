@@ -63,7 +63,6 @@ class DoodleDiveGameplay : public QFrame
 		bool moveStop_; 
 		int moveLength_; 
 		void move_everything_up();
-		
 		void move_others(); 
 		
 		int heightCounter;
@@ -85,18 +84,13 @@ class DoodleDiveGameplay : public QFrame
 		QImage* monsterImage_; 
 		QImage* theDudeImage_;
 		QImage* fireballImage_;
-		
-		void depopulate_lists();
-		
 		vector<QPixmap*> backgroundList;
 		
+		void depopulate_lists();
 		int monsterTracking_; 
-	
 	public slots:
 		void start_DoodleDive(); 
-		void pause_DoodleDive(); 
-		
-	
+		void pause_DoodleDive(); 	
 };
 
 #endif

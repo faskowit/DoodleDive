@@ -14,10 +14,6 @@ void DoodleDude::floatRight () {
 
 	int rightPoint = ((left())); 
 
-	//dummy(left()); 
-
-	//dummy(rightPoint);
-	
 	if ((rightPoint + 65)  < 400)
 		this->moveTo((rightPoint + 4), top());	
 
@@ -129,9 +125,10 @@ void DoodleDude::floatLeft () {
 		
 } */
 
-void DoodleDude::move_without_click() {
+/*void DoodleDude::move_without_click() {
 
 }
+*/
 
 void DoodleDude::dummy(int bleh) {
 

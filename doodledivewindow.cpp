@@ -1,10 +1,10 @@
 #include "doodledivewindow.h"
 
 
-
+/** write scores to a file. Name then score. One line per pair */
 void DoodleDiveWindow::write_scores() {
 
-	std::cout << "WRITING" << std::endl; 
+	//std::cout << "WRITING" << std::endl; 
 	
 	Scores temp;
 	
@@ -26,6 +26,7 @@ void DoodleDiveWindow::write_scores() {
 
 }
 
+/* Read in scores.  If no scores to read in, the high score 0 and name is is "none" */
 void DoodleDiveWindow::read_scores() {
 
 	//std::cout<<"READING" << std::endl;  
@@ -36,7 +37,10 @@ void DoodleDiveWindow::read_scores() {
 	string name, nameHigh; 
 	
 	scoreHigh = 0; 
-	nameHigh = "none"; 
+	nameHigh = "none";
+	
+	highScore_->name_ = nameHigh; 
+	highScore_->score_ = scoreHigh; 
 	
 	fin.open("doodleresults.txt");
 	
@@ -50,11 +54,7 @@ void DoodleDiveWindow::read_scores() {
 	if (fin.bad()) 
 		return; 
 	
-	//std::cout<<"going into eof loop" << std::endl;
-	
 	while (!(fin.eof())) {
-	
-		//std::cout<<"in loop" << std::endl;
 	
 		fin >> score; 
 		
@@ -71,15 +71,8 @@ void DoodleDiveWindow::read_scores() {
 	
 	}
 	
-	//std::cout<<"after loop" << std::endl;
-	
 	highScore_->name_ = nameHigh; 
-	
-	//std::cout << "inbetween" << std::endl;
-	
 	highScore_->score_ = scoreHigh; 
-	
-	//std::cout<<"after assigning high scores" << std::endl;
 
 }
 
@@ -118,7 +111,7 @@ DoodleDiveWindow::DoodleDiveWindow() {
 	
 	/** Code to implement to show scores */
 	
-	std::cout<<"CHECKKKK"<< std::endl;
+	//std::cout<<"CHECKKKK"<< std::endl;
 	
 	QString* highName = new QString(QString::fromStdString(highScore_->name_)); 
 	//highName = &(QString::fromStdString(highScore_->name_));
@@ -196,7 +189,7 @@ void DoodleDiveWindow::update_display() {
 
 DoodleDiveWindow::~DoodleDiveWindow() {
 
-	std::cout << "DoodleDiveWinow destructor called" << std::endl; 
+	//std::cout << "DoodleDiveWinow destructor called" << std::endl; 
 }
 
 /** Getters and Setters BELOW */ 
