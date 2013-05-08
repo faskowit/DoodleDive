@@ -31,6 +31,8 @@ DoodleDiveGameplay::DoodleDiveGameplay(QWidget* parentWindow) :
 	moveStop_ = false; 
 	moveLength_ = 1; 
 	
+	monsterTracking_ = 0; 
+	
 	newGame_ = false;
 	gameOver_ = false; 
 	
@@ -108,6 +110,7 @@ void DoodleDiveGameplay::start_DoodleDive() {
 		
 		newGame_ = false; 
 	
+		monsterTracking_ = 0; 
 	
 		gameOver_ = false; 
 	
@@ -268,6 +271,10 @@ void DoodleDiveGameplay::collisionCheck() {
 				fireballList.erase(fireballList.begin() + i);
 				monsterHit = true; 
 			}
+		}
+		if (fireballList[i]->y() > 800) {
+			delete fireballList[i]; 
+			fireballList.erase(fireballList.begin() + i);	
 		}
 	}
 	
@@ -449,6 +456,14 @@ void DoodleDiveGameplay::move_others() {
 	for (unsigned int i=0; i < fireballList.size(); i++)
 		fireballList[i]->fired_shot(); 
 	
+	if (monsterTracking_ > 0)	
+		monsterTracking_ --; 
+		
+	if (monsterTracking_) {
+		for (unsigned int i=0; i < fireballList.size(); i++) 
+			fireballList[i]->tracking(); 
+	}
+	
 }
 /** move stuff up, will stop when in contact with platform, also increases the rate of moving upwards*/
 void DoodleDiveGameplay::move_everything_up() {
@@ -492,12 +507,29 @@ void DoodleDiveGameplay::move_everything_up() {
 void DoodleDiveGameplay::keyPressEvent(QKeyEvent* e) {
 
 	if (e->key() == Qt::Key_Space) { 
-		if (fireballList.size() < 1)
-			fireballList.push_back(new Fireball(theDude_)); 
+		if (fireballList.size() < 1) {
+			fireballList.push_back(new Fireball(theDude_));
+			monsterTracking_ = 0; 
+		}
 		else {
 			delete fireballList[0]; 
 			fireballList.erase(fireballList.begin()); 
 			fireballList.push_back(new Fireball(theDude_));	
+			monsterTracking_ = 0; 
+		}
+	}
+	if (e->key() == Qt::Key_G) {
+		if (fireballList.size() < 1)
+			fireballList.push_back(new Fireball(theDude_)); 
+		if (monsterList.size() > 0) {
+				fireballList[0]->set_tracking_loc
+						(monsterList[monsterList.size()-1]);
+			monsterTracking_ = 100 + ((rand() % 5) * 20); 
+			}
+		else {
+			delete fireballList[0]; 
+			fireballList.erase(fireballList.begin()); 
+			monsterTracking_ = 0; 
 		}
 	}
 		

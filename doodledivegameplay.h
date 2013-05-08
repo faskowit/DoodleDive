@@ -89,6 +89,8 @@ class DoodleDiveGameplay : public QFrame
 		void depopulate_lists();
 		
 		vector<QPixmap*> backgroundList;
+		
+		int monsterTracking_; 
 	
 	public slots:
 		void start_DoodleDive(); 

@@ -3,6 +3,7 @@
 
 #include <QRect>
 #include "doodledude.h"
+#include "monster.h"
 
 class Fireball : public QRect {
 
@@ -26,6 +27,34 @@ class Fireball : public QRect {
 			
 			this->moveTo(this->x(), currentY); 
 		}; 
+		void set_tracking_loc(Monster* temp) {
+		
+			this->trackingX_ = temp->x(); 
+		};
+		void tracking() {
+		
+			int currentX = this->x(); 
+		
+			if (trackingX_ - currentX > 5) {
+			
+				currentX += 3; 
+				this->moveTo(currentX, this->y()); 
+			}
+			else if (trackingX_ - currentX < -5) {
+			
+				currentX += -3; 
+				this->moveTo(currentX, this->y());
+			
+			}
+			else {
+			
+				int currentY = top(); 
+			
+				currentY += 3; 
+			
+				this->moveTo(this->x(), currentY);
+			}
+		};
 	private:
 		int bullet_hit() {
 		
@@ -34,5 +63,6 @@ class Fireball : public QRect {
 			return health_; 
 		}
 		int health_; 
+		int trackingX_; 
 }; 
 #endif

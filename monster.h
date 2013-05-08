@@ -14,8 +14,6 @@ class Monster : public Platform {
 	private:
 		void monsterImage() {
 		
-		//set monster image 
-		
 		}
 	
 }; 
