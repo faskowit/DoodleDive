@@ -14,11 +14,14 @@
 The grader should use the following procedure to compile and run the code:
 ```shell
 #Compile Instructions
-qmake -project, qmake, then make.  
+qmake -project 
+qmake 
+make 
 #Doxygen Instructions
-doxygen -g, doxygen Doxygen 
+doxygen -g 
+doxygen Doxyfile 
 #Command to run
-run the ./game_faskowit executable file
+./game_faskowit
 ```
 
 ### Screenshots -- [Optional]
