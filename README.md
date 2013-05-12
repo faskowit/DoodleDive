@@ -7,6 +7,7 @@
   + Game Name: DoodleDive 
   + Game Description: Fall down and avoid the mosters! 
   + [Game Design Doc](GameDesignDoc.md)
+  + REQUIRES QT library 
 
 
 ### Compile & Run Instructions
