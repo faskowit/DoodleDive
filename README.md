@@ -1,7 +1,7 @@
 # Game - Programming Assignments Private Repository
 ### Student Information
   + Name: Josh Faskowitz
-  + Email: faskowit@usc.edu
+  + Email: thatsdefunct@yahoo.com
 
 ### Game Information
   + Game Name: DoodleDive 
