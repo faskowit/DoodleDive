@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Game - Programming Assignments Private Repository
 ### Student Information
   + Name: Josh Faskowitz
@@ -26,3 +27,6 @@ doxygen Doxyfile
 
 ### Screenshots -- [Optional]
 You can either remove this section or add screenshots if you wish.
+=======
+Josh
+>>>>>>> 2c81ae4e2d0f2b74c55e65fe4ba139c3027710bd
